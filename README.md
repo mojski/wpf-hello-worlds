@@ -156,4 +156,4 @@ then add <Window.Style> tag to consume behavior
 </Window.Style>
 ```
 
-### other parts will be on the next branch named: 1-
+### other parts will be on the next branch named: 1-using-MvvmDialogs-package
