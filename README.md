@@ -1,18 +1,17 @@
-### Application entrypoint
-View: App.xaml
-------------------------------------------------------------------------------------
-```xml
-<Application x:Class="WinUI.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="/Views/HelloView.xaml"> <!--set startup window (it was MainWindow.xaml default)-->
-    <Application.Resources>
-         
-    </Application.Resources>
-</Application>
-```
+### Add and use MvvmDialogs package
 
-And its code behind
+- add MvvmDialogs package if it has not been added yet
+
+```shell
+dotnet add package MvvmDialogs
+```
+Add DialogTypeLocator class
+
+- add update view and update view model (we will use Movie example)
+- register view model in App.xaml.cs:
+-register DialogService and DialogTypeLocator
+
+App.xaml.cs shoult lokks like this:
 
 ```csharp
 public partial class App : Application
@@ -24,6 +23,7 @@ public partial class App : Application
         IServiceCollection services = new ServiceCollection();
         // register view models
         services.AddSingleton<HelloViewModel>();
+        services.AddSingleton<UpdateMovieViewModel>();
 
         services.AddSingleton<IDialogTypeLocator, DialogTypeLocator>();
         services.AddSingleton<IDialogService, DialogService>();
@@ -34,126 +34,75 @@ public partial class App : Application
     }
 }
 ```
-------------------------------------------------------------------------------------
 
-Add Startup viewModel and startup View
+- set DataContext in UpdateMovieView code behind:
 
-```xml
-<Window
-    x:Class="WinUI.Views.HelloView" 
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewModels="clr-namespace:WinUI.ViewModels"
-    Title="HelloView"
-    Width="800"
-    Height="450"
-    d:DataContext="{d:DesignInstance viewModels:HelloViewModel, IsDesignTimeCreatable=True}"
-    mc:Ignorable="d">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Menu Grid.Row="0">
-            <MenuItem Header="Close Window">
-                <MenuItem Command="{Binding Path=CloseWindowCommand, Mode=OneWay}" Header="Close" /> <!-- close window command from HelloViewModel -->
-            </MenuItem>
-        </Menu>
-    </Grid>
-</Window>
-```
-code begind:
 ```csharp
-public partial class HelloView : Window
+public partial class UpdateMovieView : Window
 {
-    public HelloView()
+    public UpdateMovieView()
     {
         InitializeComponent();
-        this.DataContext = Ioc.Default.GetService<HelloViewModel>(); // set data context to bing view model with view
+        this.DataContext = Ioc.Default.GetService<UpdateMovieViewModel>();
     }
 }
 ```
 
-Add startup View model
+- add Movie model:
 ```csharp
-partial class HelloViewModel : ObservableObject
+public partial class Movie : ObservableObject
+{
+    [ObservableProperty] private string title = string.Empty;
+    [ObservableProperty] private string author = string.Empty;
+    [ObservableProperty] private string genre = string.Empty;
+}
+```
+
+- Update Movie View Model must implement IModalDialogViewModel (to be able to fine by DialogTypeLocator)
+
+```csharp
+public partial class UpdateMovieViewModel : ObservableObject, IModalDialogViewModel
 {
     [ObservableProperty] private bool isClosed = default;
+    [ObservableProperty] private Movie item = default;
 
-    public HelloViewModel()
+    public bool? DialogResult { get; private set; } = default;
+
+    public UpdateMovieViewModel()
     {
-        this.CloseWindowCommand = new AsyncRelayCommand(this.CloseWindowAsync);
+        this.OkCommand = new AsyncRelayCommand(this.OkAsync);
+        this.CancelCommand = new AsyncRelayCommand(this.CancelAsync);
     }
 
-    private async Task CloseWindowAsync(CancellationToken cancellationToken)
+    private async Task CancelAsync()
     {
-        IsClosed = true;
+        this.IsClosed = true;
         await Task.CompletedTask;
     }
 
-    public IAsyncRelayCommand CloseWindowCommand { get; }
+    private async Task OkAsync()
+    {
+        this.DialogResult = true;
+        this.IsClosed = true;
+        await Task.CompletedTask;
+    }
+
+    public IAsyncRelayCommand OkCommand { get; }
+    public IAsyncRelayCommand CancelCommand { get; }
+
 }
 ```
-
-At this point 94 line break point will hit but set IsClosed to true will have no impact to application
-We need to add behavior 
-- add windows behavior pacage if it has not been added yet
-
-```shell
-dotnet add package Microsoft.Xaml.Behaviors.Wpf
-```
-
-add folder Behaviors with WindowsBehavior class:
+- add UpdateMovieCommand prop (create it in constructor) and UpdateMovieAsync method
 
 ```csharp
-public static class WindowBehavior
-{
-    private static readonly Type ownerType = typeof(WindowBehavior);
 
-    public static readonly DependencyProperty CloseProperty =
-        DependencyProperty.RegisterAttached(
-            "Close",
-            typeof(bool),
-            ownerType,
-            new UIPropertyMetadata(defaultValue: false, (sender, e) =>
-            {
-                if (!(e.NewValue is bool) || !(bool)e.NewValue)
-                {
-                    return;
-                }
-
-                Window? window = sender as Window ?? Window.GetWindow(sender);
-
-                window?.Close();
-            }));
-
-    [AttachedPropertyBrowsableForType(typeof(Window))] // add SetCloseAction to any window class 
-    public static void SetClose(DependencyObject target, bool value)
-    {
-        target.SetValue(CloseProperty, value);
-    }
-}   
 ```
-then add in HelloView in <Window> tag attribute: xmlns:behaviors="clr-namespace:Preacon.WinUI.Behaviors" (ex afeter line 43)
-it is pointer to folder (namespace) and all it behavior classes
 
-then add <Window.Style> tag to consume behavior
+In HellowView add button with binded command
 
 ```xml
-<Window.Style>
-    <Style>
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding Path=IsClosed}" Value="true"> 
-            <!-- change value IsClosed within HelloViewModel on true will trigger WindowBehavior's close method -->
-                <Setter Property="behaviors:WindowBehavior.Close" Value="true" />
-            </DataTrigger>
-        </Style.Triggers>
-    </Style>
-</Window.Style>
+<Button
+    Command="{Binding Path=UpdateMovieCommand, Mode=OneWay}"
+    CommandParameter="{Binding Path=Movie, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+    Content="Update Movie" />
 ```
-
-### other parts will be on the next branch named: 1-using-MvvmDialogs-package
