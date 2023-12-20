@@ -4,9 +4,34 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:WinUI.ViewModels"
+    xmlns:behaviors="clr-namespace:WinUI.Behaviors"
     Title="HelloView"
     Width="800"
     Height="450"
+    d:DataContext="{d:DesignInstance viewModels:HelloViewModel,
+                                     IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
-    <Grid />
+    <Window.Style>
+        <Style>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=IsClosed}" Value="true">
+                    <Setter Property="behaviors:WindowBehavior.Close" Value="true" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="Close Window">
+                <MenuItem Command="{Binding Path=CloseWindowCommand, Mode=OneWay}" Header="Close" />
+            </MenuItem>
+        </Menu>
+    </Grid>
 </Window>

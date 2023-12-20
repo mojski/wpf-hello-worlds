@@ -18,10 +18,6 @@ public partial class App : Application
         IServiceCollection services = new ServiceCollection();
 
         services.AddSingleton<HelloViewModel>();
-
-        services.AddSingleton<IDialogTypeLocator, DialogTypeLocator>();
-        services.AddSingleton<IDialogService, DialogService>();
-
         IServiceProvider provider = services.BuildServiceProvider();
 
         Ioc.Default.ConfigureServices(provider);
