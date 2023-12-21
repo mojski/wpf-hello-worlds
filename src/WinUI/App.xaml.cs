@@ -1,4 +1,6 @@
-﻿namespace WinUI;
+﻿using WinUI.ViewModels.FunFact;
+
+namespace WinUI;
 
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +21,8 @@ public partial class App : Application
         services.AddSingleton<IDialogService, DialogService>();
 
         services.AddSingleton<HelloViewModel>();
+        services.AddSingleton<DetailsFunFactViewModel>();
+        services.AddSingleton<UpdateFunFactViewModel>();
         IServiceProvider provider = services.BuildServiceProvider();
 
         Ioc.Default.ConfigureServices(provider);

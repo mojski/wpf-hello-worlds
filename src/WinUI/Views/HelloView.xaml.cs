@@ -9,6 +9,7 @@ namespace WinUI.Views
     /// </summary>
     public partial class HelloView : Window
     {
+        public HelloViewModel ViewModel => (HelloViewModel)this.DataContext;
         public HelloView()
         {
             InitializeComponent();

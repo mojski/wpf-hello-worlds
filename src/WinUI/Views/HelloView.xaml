@@ -2,15 +2,19 @@
     x:Class="WinUI.Views.HelloView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:behaviors="clr-namespace:WinUI.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
     xmlns:viewModels="clr-namespace:WinUI.ViewModels"
     Title="HelloView"
     Width="800"
     Height="450"
     d:DataContext="{d:DesignInstance viewModels:HelloViewModel,
                                      IsDesignTimeCreatable=True}"
+    md:DialogServiceViews.IsRegistered="True"
     mc:Ignorable="d">
     <Window.Style>
         <Style>
@@ -29,17 +33,47 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
-            <MenuItem Header="Close Window">
+            <MenuItem Header="File">
+                <MenuItem Command="{Binding Path=FileLoadCommand, Mode=OneWay}" Header="Load" />
+                <MenuItem Command="{Binding Path=FileSaveCommand, Mode=OneWay}" Header="Save" />
+                <Separator />
                 <MenuItem Command="{Binding Path=CloseWindowCommand, Mode=OneWay}" Header="Close" />
             </MenuItem>
         </Menu>
-        <ToolBarTray Grid.Row="1">
+        <!--<ToolBarTray Grid.Row="1">
             <ToolBar>
                 <Button
                     Command="{Binding Path=UpdateMovieCommand, Mode=OneWay}"
-                    CommandParameter="{Binding Path=Movie, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{Binding Path=I, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Content="Update Movie" />
             </ToolBar>
-        </ToolBarTray>
+        </ToolBarTray>-->
+        <DataGrid
+            Grid.Row="1"
+            AutoGenerateColumns="False"
+            ItemsSource="{Binding Items, Mode=OneWay}"
+            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Title}" Header="Title" />
+                <DataGridTextColumn Binding="{Binding Content}" Header="Content">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                            <Setter Property="TextBlock.TextAlignment" Value="Left" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+            <b:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding Path=ShowDetailsCommand, Mode=OneWay}" CommandParameter="{Binding Path=SelectedItem}" />
+                </i:EventTrigger>
+            </b:Interaction.Triggers>
+        </DataGrid>
+
+
+        <StackPanel Grid.Row="3">
+            <Label Content="Ready" />
+        </StackPanel>
     </Grid>
 </Window>

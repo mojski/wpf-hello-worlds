@@ -1,25 +1,24 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MvvmDialogs;
-using WinUI.Models;
 
-namespace WinUI.ViewModels;
+namespace WinUI.ViewModels.FunFact;
 
-public partial class UpdateFunfactViewModel : ObservableObject, IModalDialogViewModel
+public partial class UpdateFunFactViewModel : ObservableObject, IModalDialogViewModel
 {
     [ObservableProperty] private string windowTitle = "UpdateWindow";
     [ObservableProperty] private bool isClosed = default;
-    [ObservableProperty] private Funfact item = default;
+    [ObservableProperty] private Models.FunFact item = default;
 
     public bool? DialogResult { get; private set; } = default;
 
-    public UpdateFunfactViewModel()
+    public UpdateFunFactViewModel()
     {
         this.OkCommand = new AsyncRelayCommand(this.OkAsync);
         this.CancelCommand = new AsyncRelayCommand(this.CancelAsync);
 
         // create test movie for update
-        var movie = new Funfact
+        var movie = new Models.FunFact
         {
             Title = "Test Title",
         };
@@ -38,7 +37,7 @@ public partial class UpdateFunfactViewModel : ObservableObject, IModalDialogView
         await Task.CompletedTask;
     }
 
-    private async Task UpdateAsync(Funfact? parameters)
+    private async Task UpdateAsync(Models.FunFact? parameters)
     {
         this.DialogResult = true;
         this.IsClosed = true;
