@@ -70,8 +70,6 @@
                 </i:EventTrigger>
             </b:Interaction.Triggers>
         </DataGrid>
-
-
         <StackPanel Grid.Row="3">
             <Label Content="Ready" />
         </StackPanel>

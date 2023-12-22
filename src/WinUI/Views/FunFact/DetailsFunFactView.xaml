@@ -6,11 +6,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:funFact="clr-namespace:WinUI.ViewModels.FunFact"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
     Title="DetailsFunFactView"
     Width="800"
     Height="650"
     d:DataContext="{d:DesignInstance funFact:DetailsFunFactViewModel,
                                      IsDesignTimeCreatable=True}"
+    md:DialogServiceViews.IsRegistered="True"
     mc:Ignorable="d">
     <Window.Style>
         <Style>
@@ -52,7 +54,8 @@
             Grid.Row="4"
             Width="150"
             Height="50"
-            Command="ApplicationCommands.Copy"
+            Command="{Binding Path=UpdateFunFactCommand}"
+            CommandParameter="{Binding Path=Item}"
             Content="Edit" />
     </Grid>
 </Window>

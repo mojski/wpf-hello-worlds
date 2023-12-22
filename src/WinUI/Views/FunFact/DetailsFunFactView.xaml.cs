@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using System.Windows;
+using WinUI.ViewModels;
 using WinUI.ViewModels.FunFact;
 
 namespace WinUI.Views.FunFact
@@ -14,5 +15,6 @@ namespace WinUI.Views.FunFact
             InitializeComponent();
             this.DataContext = Ioc.Default.GetService<DetailsFunFactViewModel>();
         }
+        public DetailsFunFactViewModel ViewModel => (DetailsFunFactViewModel)this.DataContext;
     }
 }

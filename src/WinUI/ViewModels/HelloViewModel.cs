@@ -16,12 +16,12 @@ namespace WinUI.ViewModels
     {
         private readonly IDialogService dialogService;
 
-        private const string APPLICATION_NAME = "Hello Fun Fact Added";
+        private const string APPLICATION_NAME = "Hello Fun Fact Adder";
 
-        [ObservableProperty] private string fileBasePath = default;
+        private string fileBasePath = default;
 
         [ObservableProperty] private bool isClosed = default;
-        [ObservableProperty] private Models.FunFact? selectedItem = default;
+        [ObservableProperty] private Models.FunFact selectedItem = default;
         [ObservableProperty] private ObservableCollection<Models.FunFact> items = new ();
 
         public HelloViewModel(IDialogService dialogService)
@@ -30,7 +30,7 @@ namespace WinUI.ViewModels
 
             this.CloseWindowCommand = new AsyncRelayCommand(this.CloseWindowAsync);
             this.ShowDetailsCommand = new AsyncRelayCommand<Models.FunFact>(this.ShowDetailsAsync);
-            this.UpdateMovieCommand = new AsyncRelayCommand<Models.FunFact>(this.UpdateMovieAsync);
+            this.CreateFunFactCommand = new AsyncRelayCommand<UpdateFunFactViewModel>(this.CreateFunFactAsync);
 
             this.FileLoadCommand = new AsyncRelayCommand(this.FileLoadAsync);
             this.FileSaveCommand = new AsyncRelayCommand(this.FileSaveAsync);
@@ -40,29 +40,6 @@ namespace WinUI.ViewModels
         private async Task CloseWindowAsync(CancellationToken cancellationToken)
         {
             IsClosed = true;
-            await Task.CompletedTask;
-        }
-
-        private async Task UpdateMovieAsync(Models.FunFact? parameter, CancellationToken cancellationToken = default)
-        {
-            ArgumentNullException.ThrowIfNull(parameter);
-
-            var viewModel = new UpdateFunFactViewModel() { Item = this.selectedItem };
-            viewModel.Item.Title = parameter.Title;
-
-            var result = this.dialogService.ShowDialog(this, viewModel);
-
-            if (result is true)
-            {
-                var x = viewModel.Item;
-            }
-
-            this.selectedItem.Title = viewModel.Item.Title;
-            this.selectedItem.Content = viewModel.Item.Content;
-            this.selectedItem.Link = viewModel.Item.Link;
-            this.selectedItem.Image = viewModel.Item.Image;
-            this.selectedItem.RelatedMovies = viewModel.Item.RelatedMovies;
-
             await Task.CompletedTask;
         }
 
@@ -156,20 +133,45 @@ namespace WinUI.ViewModels
         {
             ArgumentNullException.ThrowIfNull(parameter);
 
-            var viewModel = new DetailsFunFactViewModel() { Item = this.selectedItem };
+            var viewModel = new DetailsFunFactViewModel(this.dialogService, this.fileBasePath) { Item = parameter };
             var imageFileName = Path.GetFileName(parameter.Image);
-            viewModel.Item.Image = Path.Combine(fileBasePath, "images", imageFileName);
+
+            if (string.IsNullOrWhiteSpace(fileBasePath) is false)
+            {
+                viewModel.Item.Image = Path.Combine(fileBasePath, "images", imageFileName);
+                _ = this.dialogService.ShowDialog(this, viewModel);
+
+                await Task.CompletedTask;
+            }
+        }
+
+        private async Task CreateFunFactAsync(UpdateFunFactViewModel? parameter, CancellationToken cancellationToken)
+        {
+            ArgumentNullException.ThrowIfNull(parameter);
+
+            var viewModel = new UpdateFunFactViewModel(this.dialogService, this.fileBasePath) { Item = this.selectedItem };
 
             var result = this.dialogService.ShowDialog(this, viewModel);
+
+            if (result is true)
+            {
+                var x = viewModel.Item;
+            }
+
+            this.selectedItem.Title = viewModel.Item.Title;
+            this.selectedItem.Content = viewModel.Item.Content;
+            this.selectedItem.Link = viewModel.Item.Link;
+            this.selectedItem.Image = viewModel.Item.Image;
+            this.selectedItem.RelatedMovies = viewModel.Item.RelatedMovies;
 
             await Task.CompletedTask;
         }
 
         public IAsyncRelayCommand CloseWindowCommand { get; }
-        public IAsyncRelayCommand<Models.FunFact> UpdateMovieCommand { get; }
         public IAsyncRelayCommand FileLoadCommand { get; }
         public IAsyncRelayCommand FileSaveCommand { get; }
         public IAsyncRelayCommand FileExitCommand { get; }
         public IAsyncRelayCommand<Models.FunFact> ShowDetailsCommand { get; }
+        public IAsyncRelayCommand<UpdateFunFactViewModel> CreateFunFactCommand { get; }
     }
 }
