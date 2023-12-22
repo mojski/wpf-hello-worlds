@@ -6,8 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:funFact="clr-namespace:WinUI.ViewModels.FunFact"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewModels="clr-namespace:WinUI.ViewModels"
     xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
+    xmlns:viewModels="clr-namespace:WinUI.ViewModels"
     Title="UpdateFunFactView"
     Width="800"
     Height="450"
@@ -26,12 +26,16 @@
     </Window.Style>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -50,29 +54,37 @@
         <TextBox
             Grid.Row="1"
             Grid.Column="1"
-            Text="{Binding Path=Item.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            Text="{Binding Path=Item.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            TextWrapping="WrapWithOverflow" />
         <Label
             Grid.Row="2"
             Grid.Column="0"
-            Content="Upload image" />
-        <Button
+            Content="Image" />
+        <Image
             Grid.Row="2"
             Grid.Column="1"
-            Command="{Binding Path=ImageUploadCommand, Mode=OneWay}"
-            Content="Upload" />
-
-        <Button
+            Width="100"
+            Source="{Binding Path=Item.Image}" />
+        <Label
+            Grid.Row="3"
+            Grid.Column="0"
+            Content="Related link" />
+        <TextBox
             Grid.Row="3"
             Grid.Column="1"
-            Command="{Binding Path=ImageUploadCommand, Mode=OneWay}"
-            Content="Cancel" />
+            Text="{Binding Path=Item.Link, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <Button
-            Grid.Row="3"
+            Grid.Row="4"
+            Grid.Column="1"
+            Command="{Binding Path=ImageUploadCommand, Mode=OneTime, UpdateSourceTrigger=PropertyChanged}"
+            Content="UploadImage" />
+        <Button
+            Grid.Row="5"
             Grid.Column="1"
             Command="{Binding Path=OkCommand, Mode=OneWay}"
-            Content="Cancel" />
+            Content="OK" />
         <Button
-            Grid.Row="3"
+            Grid.Row="6"
             Grid.Column="1"
             Command="{Binding Path=CancelCommand, Mode=OneWay}"
             Content="Cancel" />

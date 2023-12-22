@@ -36,20 +36,16 @@
             <MenuItem Header="File">
                 <MenuItem Command="{Binding Path=FileLoadCommand, Mode=OneWay}" Header="Load" />
                 <MenuItem Command="{Binding Path=FileSaveCommand, Mode=OneWay}" Header="Save" />
+                <!--<MenuItem Command="{Binding Path=CreateFunFactCommand, Mode=OneWay}" Header="New" />-->
                 <Separator />
-                <MenuItem Command="{Binding Path=CloseWindowCommand, Mode=OneWay}" Header="Close" />
+                <MenuItem Command="{Binding Path=FileExitCommand, Mode=OneWay}" Header="Exit" />
             </MenuItem>
         </Menu>
-        <!--<ToolBarTray Grid.Row="1">
-            <ToolBar>
-                <Button
-                    Command="{Binding Path=UpdateMovieCommand, Mode=OneWay}"
-                    CommandParameter="{Binding Path=I, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Content="Update Movie" />
-            </ToolBar>
-        </ToolBarTray>-->
+        <ToolBar Grid.Row="1">
+            <Button Command="{Binding Path=CreateFunFactCommand, Mode=OneWay}" Content="+" />
+        </ToolBar>
         <DataGrid
-            Grid.Row="1"
+            Grid.Row="2"
             AutoGenerateColumns="False"
             ItemsSource="{Binding Items, Mode=OneWay}"
             SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -57,9 +53,8 @@
                 <DataGridTextColumn Binding="{Binding Title}" Header="Title" />
                 <DataGridTextColumn Binding="{Binding Content}" Header="Content">
                     <DataGridTextColumn.ElementStyle>
-                        <Style>
-                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-                            <Setter Property="TextBlock.TextAlignment" Value="Left" />
+                        <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="{x:Type TextBlock}">
+                            <Setter Property="TextWrapping" Value="Wrap" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>

@@ -15,13 +15,12 @@ public partial class UpdateFunFactViewModel : ObservableObject, IModalDialogView
     public UpdateFunFactViewModel(IDialogService dialogService, string dataBasePath)
     {
         this.dialogService = dialogService;
-
         this.fileBasePath = dataBasePath;
+
+        this.ImageUploadCommand = new AsyncRelayCommand(this.UploadImageAsync);
 
         this.OkCommand = new AsyncRelayCommand(this.OkAsync);
         this.CancelCommand = new AsyncRelayCommand(this.CancelAsync);
-
-        this.ImageUploadCommand = new AsyncRelayCommand(this.UploadImageAsync);
     }
 
     [ObservableProperty] private string windowTitle = "UpdateWindow";
@@ -30,20 +29,7 @@ public partial class UpdateFunFactViewModel : ObservableObject, IModalDialogView
 
     public bool? DialogResult { get; private set; } = default;
 
-    private async Task CancelAsync()
-    {
-        this.IsClosed = true;
-        await Task.CompletedTask;
-    }
-
-    private async Task OkAsync()
-    {
-        this.DialogResult = true;
-        this.IsClosed = true;
-        await Task.CompletedTask;
-    }
-
-    private async Task UploadImageAsync()
+    private async Task UploadImageAsync(CancellationToken cancellationToken = default)
     {
         var openImageDialogSettings = new OpenFileDialogSettings
         {
@@ -55,20 +41,42 @@ public partial class UpdateFunFactViewModel : ObservableObject, IModalDialogView
 
         if (result is true)
         {
-            var fileName = Path.GetFileName(openImageDialogSettings.FileName);
+            var fileName = Path.GetFileNameWithoutExtension(openImageDialogSettings.FileName);
+            var extension = Path.GetExtension(openImageDialogSettings.FileName);
 
-            var funFactFilePath = Path.Combine("images", fileName);
-            var movePath = Path.Combine(this.fileBasePath, funFactFilePath);
-            item.Image = funFactFilePath;
+            var funFactFilePath = Path.Combine("images", fileName + extension);
+            var copyPath = Path.Combine(this.fileBasePath, funFactFilePath);
 
-            File.Move(openImageDialogSettings.FileName, movePath);
+            var count = 0;
+
+            while(File.Exists(copyPath)) 
+            {
+                var tempFileName = $"{fileName}({count++})";
+                copyPath = Path.Combine(this.fileBasePath, "images", tempFileName + extension);
+            }
+
+            File.Copy(openImageDialogSettings.FileName, copyPath);
+            this.Item.Image = funFactFilePath;
         }
 
+        await Task.CompletedTask;
+    }
+
+    private async Task CancelAsync(CancellationToken cancellationToken = default)
+    {
+        this.DialogResult = false;
         this.IsClosed = true;
         await Task.CompletedTask;
     }
 
+    private async Task OkAsync(CancellationToken cancellationToken = default)
+    {
+        this.DialogResult = true;
+        this.IsClosed = true;
+        await Task.CompletedTask;
+    }
+
+    public IAsyncRelayCommand ImageUploadCommand { get; }
     public IAsyncRelayCommand OkCommand { get; }
     public IAsyncRelayCommand CancelCommand { get; }
-    public IAsyncRelayCommand ImageUploadCommand { get; }
 }

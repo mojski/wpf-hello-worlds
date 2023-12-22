@@ -18,8 +18,7 @@ namespace WinUI.ViewModels
 
         private const string APPLICATION_NAME = "Hello Fun Fact Adder";
 
-        private string fileBasePath = default;
-
+        [ObservableProperty] private string fileBasePath = default;
         [ObservableProperty] private bool isClosed = default;
         [ObservableProperty] private Models.FunFact selectedItem = default;
         [ObservableProperty] private ObservableCollection<Models.FunFact> items = new ();
@@ -28,19 +27,12 @@ namespace WinUI.ViewModels
         {
             this.dialogService = dialogService;
 
-            this.CloseWindowCommand = new AsyncRelayCommand(this.CloseWindowAsync);
             this.ShowDetailsCommand = new AsyncRelayCommand<Models.FunFact>(this.ShowDetailsAsync);
-            this.CreateFunFactCommand = new AsyncRelayCommand<UpdateFunFactViewModel>(this.CreateFunFactAsync);
+            this.CreateFunFactCommand = new AsyncRelayCommand(this.CreateFunFactAsync);
 
             this.FileLoadCommand = new AsyncRelayCommand(this.FileLoadAsync);
             this.FileSaveCommand = new AsyncRelayCommand(this.FileSaveAsync);
             this.FileExitCommand = new AsyncRelayCommand(this.FileExitAsync);
-        }
-
-        private async Task CloseWindowAsync(CancellationToken cancellationToken)
-        {
-            IsClosed = true;
-            await Task.CompletedTask;
         }
 
         private async Task FileLoadAsync(CancellationToken cancellationToken)
@@ -67,7 +59,7 @@ namespace WinUI.ViewModels
                     }
 
                     var fileDirectory = new FileInfo(openFileDialogSettings.FileName).Directory.FullName;
-                    this.fileBasePath = fileDirectory;
+                    this.FileBasePath = fileDirectory;
                 }
                 catch (Exception exception)
                 {
@@ -145,33 +137,51 @@ namespace WinUI.ViewModels
             }
         }
 
-        private async Task CreateFunFactAsync(UpdateFunFactViewModel? parameter, CancellationToken cancellationToken)
+        private async Task CreateFunFactAsync( CancellationToken cancellationToken)
         {
-            ArgumentNullException.ThrowIfNull(parameter);
+            if (this.FileBasePath is null || this.FileBasePath.Length == 0)
+            {
+                var messageBoxSettings = new MessageBoxSettings
+                {
+                    MessageBoxText = "You can not add fun facts to empty list.",
+                    Caption = APPLICATION_NAME,
+                    Icon = MessageBoxImage.Error,
+                    Button = MessageBoxButton.OK,
+                };
 
-            var viewModel = new UpdateFunFactViewModel(this.dialogService, this.fileBasePath) { Item = this.selectedItem };
+                _ = this.dialogService.ShowMessageBox(this, messageBoxSettings);
+
+                return;
+            }
+
+            var emptyModel = new Models.FunFact();
+            var viewModel = new UpdateFunFactViewModel(this.dialogService, fileBasePath) { Item = emptyModel };
 
             var result = this.dialogService.ShowDialog(this, viewModel);
 
             if (result is true)
             {
-                var x = viewModel.Item;
-            }
+                var nextId = Items.Any() ? Items.Max(x=>x.Id) + 1 : 1;
+                var newModel = new Models.FunFact
+                {
+                    Id = nextId,
+                    Title = viewModel.Item.Title,
+                    Content = viewModel.Item.Content,
+                    Link = viewModel.Item.Link,
+                    Image = viewModel.Item.Image,
+                    RelatedMovies = viewModel.Item.RelatedMovies,
+                };
 
-            this.selectedItem.Title = viewModel.Item.Title;
-            this.selectedItem.Content = viewModel.Item.Content;
-            this.selectedItem.Link = viewModel.Item.Link;
-            this.selectedItem.Image = viewModel.Item.Image;
-            this.selectedItem.RelatedMovies = viewModel.Item.RelatedMovies;
+                Items.Add(newModel);
+            }
 
             await Task.CompletedTask;
         }
 
-        public IAsyncRelayCommand CloseWindowCommand { get; }
         public IAsyncRelayCommand FileLoadCommand { get; }
         public IAsyncRelayCommand FileSaveCommand { get; }
         public IAsyncRelayCommand FileExitCommand { get; }
         public IAsyncRelayCommand<Models.FunFact> ShowDetailsCommand { get; }
-        public IAsyncRelayCommand<UpdateFunFactViewModel> CreateFunFactCommand { get; }
+        public IAsyncRelayCommand CreateFunFactCommand { get; }
     }
 }

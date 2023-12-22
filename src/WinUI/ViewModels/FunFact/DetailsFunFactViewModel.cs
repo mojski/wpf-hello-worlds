@@ -1,8 +1,7 @@
-﻿using System.IO;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MvvmDialogs;
-using MvvmDialogs.FrameworkDialogs.OpenFile;
+using System.Windows;
 
 namespace WinUI.ViewModels.FunFact
 {
@@ -24,22 +23,21 @@ namespace WinUI.ViewModels.FunFact
 
             this.fileBasePath = fileBasePath;
 
-            this.OkCommand = new AsyncRelayCommand(this.OkAsync);
-            this.CancelCommand = new AsyncRelayCommand(this.CancelAsync);
+            this.CloseCommand = new AsyncRelayCommand(this.CloseAsync);
+            this.CopyCommand = new AsyncRelayCommand<string>(this.CopyAsync);
             this.UpdateFunFactCommand = new AsyncRelayCommand<Models.FunFact>(this.UpdateFunFactAsync);
-            this.ImageUploadCommand = new AsyncRelayCommand(this.UploadImageAsync);
         }
 
-        private async Task CancelAsync()
+        private async Task CloseAsync(CancellationToken cancellationToken = default)
         {
+            this.DialogResult = true;
             this.IsClosed = true;
             await Task.CompletedTask;
         }
 
-        private async Task OkAsync()
+        private async Task CopyAsync(string parameter, CancellationToken cancellationToken = default)
         {
-            this.DialogResult = true;
-            this.IsClosed = true;
+            Clipboard.SetText(parameter);
             await Task.CompletedTask;
         }
 
@@ -47,7 +45,16 @@ namespace WinUI.ViewModels.FunFact
         {
             ArgumentNullException.ThrowIfNull(parameter);
 
-            var viewModel = new UpdateFunFactViewModel(this.dialogService, this.fileBasePath) { Item = parameter };
+            var copy = new Models.FunFact
+            {
+                Content = parameter.Content, 
+                Title = parameter.Title, 
+                Image = parameter.Image,
+                Link = parameter.Link,
+                Id = parameter.Id,
+            };
+
+            var viewModel = new UpdateFunFactViewModel(this.dialogService, this.fileBasePath) { Item = copy };
 
             var result = this.dialogService.ShowDialog(this, viewModel);
 
@@ -63,29 +70,8 @@ namespace WinUI.ViewModels.FunFact
             await Task.CompletedTask;
         }
 
-        private async Task UploadImageAsync()
-        {
-            var openImageDialogSettings = new OpenFileDialogSettings
-            {
-                CheckFileExists = true, 
-                Filter = "PNG Files (*.png)|*.png",
-            };
-
-            var result = this.dialogService.ShowOpenFileDialog(this, openImageDialogSettings);
-
-            if (result is true)
-            {
-                var fileName = Path.GetFileName(openImageDialogSettings.FileName);
-                this.Item.Image = Path.Combine("images", fileName);
-            }
-
-            this.IsClosed = true;
-            await Task.CompletedTask;
-        }
-
-        public IAsyncRelayCommand OkCommand { get; }
-        public IAsyncRelayCommand CancelCommand { get; }
+        public IAsyncRelayCommand CloseCommand { get; }
+        public IAsyncRelayCommand<string> CopyCommand { get; }
         public IAsyncRelayCommand<Models.FunFact> UpdateFunFactCommand { get; }
-        public IAsyncRelayCommand ImageUploadCommand { get; }
     }
 }
