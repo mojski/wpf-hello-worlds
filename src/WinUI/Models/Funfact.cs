@@ -9,6 +9,6 @@ public partial class FunFact : ObservableObject
     [ObservableProperty] private string image = string.Empty;
     [ObservableProperty] private string link = string.Empty;
     [ObservableProperty] private string content = string.Empty;
-    [ObservableProperty] private ObservableCollection<int> relatedMovies;
-    [ObservableProperty] private int id;
+    [ObservableProperty] private ObservableCollection<RelatedMovie> relatedMovies = new();
+    [ObservableProperty] private int? id = default;
 }

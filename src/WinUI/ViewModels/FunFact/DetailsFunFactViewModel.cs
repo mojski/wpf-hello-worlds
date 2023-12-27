@@ -51,6 +51,7 @@ namespace WinUI.ViewModels.FunFact
                 Title = parameter.Title, 
                 Image = parameter.Image,
                 Link = parameter.Link,
+                RelatedMovies = parameter.RelatedMovies,
                 Id = parameter.Id,
             };
 

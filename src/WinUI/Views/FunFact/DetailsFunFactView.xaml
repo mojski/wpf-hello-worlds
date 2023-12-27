@@ -35,7 +35,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock
             Grid.Row="0"
@@ -64,18 +63,22 @@
             Margin="5,0,0,0"
             Text="{Binding Path=Item.Link}" />
 
-        <Label
+        <!--<Label
             Grid.Row="6"
             Grid.Column="0"
             Margin="5,0,0,0"
-            Content="Related link:" />
-        <TextBlock
-            Grid.Row="7"
-            Margin="5,0,0,0"
-            Text="465, 575, 57557" />
-
+            Content="Related movies:" />-->
+        <!--<ListBox Grid.Row="7" ItemsSource="{Binding Item.RelatedMovies}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>-->
         <Button
-            Grid.Row="8"
+            Grid.Row="6"
             Width="150"
             Height="30"
             Margin="10"
@@ -83,7 +86,7 @@
             CommandParameter="{Binding Path=Item.Link}"
             Content="Fun fact more info link (copy)" />
         <Button
-            Grid.Row="9"
+            Grid.Row="7"
             Width="150"
             Height="30"
             Margin="10"
@@ -91,7 +94,7 @@
             CommandParameter="{Binding Path=Item}"
             Content="Edit" />
         <Button
-            Grid.Row="10"
+            Grid.Row="8"
             Width="150"
             Height="30"
             Margin="10"

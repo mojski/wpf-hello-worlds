@@ -8,6 +8,8 @@ using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
+using WinUI.Models.Entities;
+using WinUI.Models.Interfaces;
 using WinUI.ViewModels.FunFact;
 
 namespace WinUI.ViewModels
@@ -15,6 +17,7 @@ namespace WinUI.ViewModels
     public partial class HelloViewModel : ObservableObject
     {
         private readonly IDialogService dialogService;
+        private readonly IFunFactService funFactService;
 
         private const string APPLICATION_NAME = "Hello Fun Fact Adder";
 
@@ -23,9 +26,10 @@ namespace WinUI.ViewModels
         [ObservableProperty] private Models.FunFact selectedItem = default;
         [ObservableProperty] private ObservableCollection<Models.FunFact> items = new ();
 
-        public HelloViewModel(IDialogService dialogService)
+        public HelloViewModel(IDialogService dialogService, IFunFactService funFactService)
         {
             this.dialogService = dialogService;
+            this.funFactService = funFactService;
 
             this.ShowDetailsCommand = new AsyncRelayCommand<Models.FunFact>(this.ShowDetailsAsync);
             this.CreateFunFactCommand = new AsyncRelayCommand(this.CreateFunFactAsync);
@@ -49,13 +53,14 @@ namespace WinUI.ViewModels
             {
                 try
                 {
-                    var fileContent = await File.ReadAllTextAsync(openFileDialogSettings.FileName, cancellationToken);
-                    items.Clear();
-                    var funFacts =  JsonConvert.DeserializeObject<ObservableCollection<Models.FunFact>>(fileContent);
+                    this.Items.Clear();
 
-                    foreach (var funFact in funFacts)
+                    var entities = await this.funFactService.ListAsync(openFileDialogSettings.FileName, cancellationToken);
+
+                    foreach (var entity in entities)
                     {
-                        items.Add(funFact);
+                        var model = entity.ToFunFact();
+                        this.Items.Add(model);
                     }
 
                     var fileDirectory = new FileInfo(openFileDialogSettings.FileName).Directory.FullName;
@@ -91,14 +96,8 @@ namespace WinUI.ViewModels
 
                 if (result is true)
                 {
-                    var json = JsonConvert.SerializeObject(items);
-
-                    if (File.Exists(saveFileDialogSettings.FileName))
-                    {
-                        File.Delete(saveFileDialogSettings.FileName);
-                    }
-
-                    await File.WriteAllTextAsync(saveFileDialogSettings.FileName, json, cancellationToken);
+                    var entities = this.Items.Select(item => FunFactEntity.FromFunFact(item));
+                    await this.funFactService.UpdateAsync(entities, saveFileDialogSettings.FileName, cancellationToken);
                 }
             }
             catch (Exception exception)

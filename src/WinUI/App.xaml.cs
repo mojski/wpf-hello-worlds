@@ -1,4 +1,7 @@
-﻿namespace WinUI;
+﻿using WinUI.Models.Interfaces;
+using WinUI.Models.Services;
+
+namespace WinUI;
 
 using WinUI.ViewModels.FunFact;
 using CommunityToolkit.Mvvm.DependencyInjection;
@@ -18,6 +21,7 @@ public partial class App : Application
 
         services.AddSingleton<IDialogTypeLocator, DialogTypeLocator>();
         services.AddSingleton<IDialogService, DialogService>();
+        services.AddSingleton<IFunFactService, FunFactService>();
 
         services.AddSingleton<HelloViewModel>();
         services.AddSingleton<DetailsFunFactViewModel>();
