@@ -13,10 +13,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Remove="Resources\Global.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Resources\favicon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\noimg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Global.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

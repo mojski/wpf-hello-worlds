@@ -9,13 +9,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
     xmlns:viewModels="clr-namespace:WinUI.ViewModels"
-    Title="HelloView"
+    Title="{DynamicResource MainWindowTitle}"
     Width="800"
     Height="450"
     d:DataContext="{d:DesignInstance viewModels:HelloViewModel,
                                      IsDesignTimeCreatable=True}"
     md:DialogServiceViews.IsRegistered="True"
-    Icon="../Resources/favicon.ico"
+    Icon="{DynamicResource WindowIcon}"
     mc:Ignorable="d">
     <Window.Style>
         <Style>
@@ -26,6 +26,13 @@
             </Style.Triggers>
         </Style>
     </Window.Style>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Global.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -37,7 +44,6 @@
             <MenuItem Header="File">
                 <MenuItem Command="{Binding Path=FileLoadCommand, Mode=OneWay}" Header="Load" />
                 <MenuItem Command="{Binding Path=FileSaveCommand, Mode=OneWay}" Header="Save" />
-                <!--<MenuItem Command="{Binding Path=CreateFunFactCommand, Mode=OneWay}" Header="New" />-->
                 <Separator />
                 <MenuItem Command="{Binding Path=FileExitCommand, Mode=OneWay}" Header="Exit" />
             </MenuItem>
