@@ -15,6 +15,7 @@
     d:DataContext="{d:DesignInstance viewModels:HelloViewModel,
                                      IsDesignTimeCreatable=True}"
     md:DialogServiceViews.IsRegistered="True"
+    Icon="../Resources/favicon.ico"
     mc:Ignorable="d">
     <Window.Style>
         <Style>

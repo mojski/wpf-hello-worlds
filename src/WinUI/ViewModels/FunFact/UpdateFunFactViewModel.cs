@@ -56,7 +56,7 @@ public partial class UpdateFunFactViewModel : ObservableObject, IModalDialogView
             }
 
             File.Copy(openImageDialogSettings.FileName, copyPath);
-            this.Item.Image = funFactFilePath;
+            this.Item.Image = copyPath;
         }
 
         await Task.CompletedTask;

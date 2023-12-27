@@ -84,19 +84,7 @@
             <Image.InputBindings>
                 <MouseBinding Command="{Binding Path=ImageUploadCommand}" MouseAction="LeftDoubleClick" />
             </Image.InputBindings>
-            <!--<b:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction Command="{Binding Path=ImageUploadCommand, Mode=OneWay}" />
-                </i:EventTrigger>
-            </b:Interaction.Triggers>-->
         </Image>
-        <!--<Button
-            Grid.Row="3"
-            Grid.Column="1"
-            Width="90"
-            Height="30"
-            Command="{Binding Path=ImageUploadCommand, Mode=OneTime, UpdateSourceTrigger=PropertyChanged}"
-            Content="UploadImage" />-->
         <Label
             Grid.Row="3"
             Grid.Column="0"

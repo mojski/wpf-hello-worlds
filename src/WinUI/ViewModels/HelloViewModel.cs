@@ -4,7 +4,6 @@ using MvvmDialogs;
 using MvvmDialogs.FrameworkDialogs.MessageBox;
 using MvvmDialogs.FrameworkDialogs.OpenFile;
 using MvvmDialogs.FrameworkDialogs.SaveFile;
-using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
@@ -96,7 +95,7 @@ namespace WinUI.ViewModels
 
                 if (result is true)
                 {
-                    var entities = this.Items.Select(item => FunFactEntity.FromFunFact(item));
+                    var entities = this.Items.Select(FunFactEntity.FromFunFact);
                     await this.funFactService.UpdateAsync(entities, saveFileDialogSettings.FileName, cancellationToken);
                 }
             }
