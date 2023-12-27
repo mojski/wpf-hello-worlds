@@ -86,7 +86,7 @@
             Grid.Column="1"
             Width="100"
             Margin="2"
-            Source="{Binding Path=Item.Image}">
+            Source="{Binding Path=Item.Image.Value}">
             <Image.InputBindings>
                 <MouseBinding Command="{Binding Path=ImageUploadCommand}" MouseAction="LeftDoubleClick" />
             </Image.InputBindings>

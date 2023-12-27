@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.IO;
 
 namespace WinUI.Models.Entities
 {
@@ -25,7 +24,6 @@ namespace WinUI.Models.Entities
             {
                 Id = this.Id,
                 Title = this.Title,
-                Image = this.Image,
                 Link = this.Link,
                 Content = this.Content,
                 RelatedMovies = relatedMovies
@@ -34,8 +32,7 @@ namespace WinUI.Models.Entities
 
         public static FunFactEntity FromFunFact(FunFact funFact)
         {
-            var fileName = Path.GetFileName(funFact.Image);
-            var imageJsonPath = $"/images/{fileName}"; // TODO move to the class containing the paths
+            var imageJsonPath = FileHelper.GetJsonFilePath(funFact.Image.FileName);
             return new FunFactEntity
             {
                 Id = funFact.Id.Value,

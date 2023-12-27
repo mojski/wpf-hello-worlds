@@ -42,10 +42,13 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
-        <Menu Grid.Row="0">
+        <Menu
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="2">
             <MenuItem Header="File">
                 <MenuItem Command="{Binding Path=FileLoadCommand, Mode=OneWay}" Header="Load" />
                 <MenuItem Command="{Binding Path=FileSaveCommand, Mode=OneWay}" Header="Save" />
@@ -77,13 +80,12 @@
             </DataGrid.Columns>
             <b:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction Command="{Binding Path=ShowDetailsCommand, Mode=OneWay}" CommandParameter="{Binding Path=SelectedItem}" />
+                    <i:InvokeCommandAction Command="{Binding Path=UpdateFunFactCommand, Mode=OneWay}" CommandParameter="{Binding Path=SelectedItem}" />
                 </i:EventTrigger>
             </b:Interaction.Triggers>
         </DataGrid>
         <userControl:DetailsFunFactUserControl
             Grid.Row="2"
-            Grid.RowSpan="2"
             Grid.Column="1"
             DataContext="{Binding Path=SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <StackPanel

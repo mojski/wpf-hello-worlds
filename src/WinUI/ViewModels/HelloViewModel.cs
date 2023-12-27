@@ -7,6 +7,8 @@ using MvvmDialogs.FrameworkDialogs.SaveFile;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
+using System.Windows.Media.Imaging;
+using WinUI.Models;
 using WinUI.Models.Entities;
 using WinUI.Models.Interfaces;
 using WinUI.ViewModels.FunFact;
@@ -30,7 +32,7 @@ namespace WinUI.ViewModels
             this.dialogService = dialogService;
             this.funFactService = funFactService;
 
-            this.ShowDetailsCommand = new AsyncRelayCommand<Models.FunFact>(this.ShowDetailsAsync);
+            this.UpdateFunFactCommand = new AsyncRelayCommand<Models.FunFact>(this.UpdateFunFactAsync);
             this.CreateFunFactCommand = new AsyncRelayCommand(this.CreateFunFactAsync);
 
             this.FileLoadCommand = new AsyncRelayCommand(this.FileLoadAsync);
@@ -56,9 +58,22 @@ namespace WinUI.ViewModels
 
                     var entities = await this.funFactService.ListAsync(openFileDialogSettings.FileName, cancellationToken);
 
-                    foreach (var entity in entities)
+                    foreach (var entity in entities) // TODO load images by demand
                     {
                         var model = entity.ToFunFact();
+
+                        var imageFileName = FileHelper.GetFullFileName(entity.Image);
+                        var imagePhysicalPath =
+                            FileHelper.GetImagePhysicalPath(openFileDialogSettings.FileName, imageFileName);
+
+                        var bitmap = await FileHelper.GetBitmapImageAsync(imagePhysicalPath, cancellationToken);
+
+                        model.Image = new Image
+                        {
+                            FileName = imageFileName,
+                            Value = bitmap,
+                        };
+
                         this.Items.Add(model);
                     }
 
@@ -119,22 +134,6 @@ namespace WinUI.ViewModels
             await Task.CompletedTask;
         }
 
-        private async Task ShowDetailsAsync(Models.FunFact? parameter, CancellationToken cancellationToken)
-        {
-            ArgumentNullException.ThrowIfNull(parameter);
-
-            var viewModel = new DetailsFunFactViewModel(this.dialogService, this.fileBasePath) { Item = parameter };
-            var imageFileName = Path.GetFileName(parameter.Image);
-
-            if (string.IsNullOrWhiteSpace(fileBasePath) is false)
-            {
-                viewModel.Item.Image = Path.Combine(fileBasePath, "images", imageFileName);
-                _ = this.dialogService.ShowDialog(this, viewModel);
-
-                await Task.CompletedTask;
-            }
-        }
-
         private async Task CreateFunFactAsync( CancellationToken cancellationToken)
         {
             if (this.FileBasePath is null || this.FileBasePath.Length == 0)
@@ -176,10 +175,41 @@ namespace WinUI.ViewModels
             await Task.CompletedTask;
         }
 
+        private async Task UpdateFunFactAsync(Models.FunFact? parameter, CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(parameter);
+
+            var copy = new Models.FunFact
+            {
+                Content = parameter.Content, 
+                Title = parameter.Title, 
+                Image = parameter.Image,
+                Link = parameter.Link,
+                RelatedMovies = parameter.RelatedMovies,
+                Id = parameter.Id,
+            };
+
+            var viewModel = new UpdateFunFactViewModel(this.dialogService, this.fileBasePath) { Item = copy };
+
+            var result = this.dialogService.ShowDialog(this, viewModel);
+
+            if (result is true)
+            {
+                parameter.Title = viewModel.Item.Title;
+                parameter.Content = viewModel.Item.Content;
+                parameter.Link = viewModel.Item.Link;
+                parameter.Image = viewModel.Item.Image;
+                parameter.RelatedMovies = viewModel.Item.RelatedMovies;
+            }
+
+            await Task.CompletedTask;
+        }
+
+
         public IAsyncRelayCommand FileLoadCommand { get; }
         public IAsyncRelayCommand FileSaveCommand { get; }
         public IAsyncRelayCommand FileExitCommand { get; }
-        public IAsyncRelayCommand<Models.FunFact> ShowDetailsCommand { get; }
+        public IAsyncRelayCommand<Models.FunFact> UpdateFunFactCommand { get; }
         public IAsyncRelayCommand CreateFunFactCommand { get; }
     }
 }

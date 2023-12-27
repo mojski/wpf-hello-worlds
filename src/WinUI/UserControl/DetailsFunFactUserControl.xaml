@@ -33,7 +33,7 @@
             Grid.Row="1"
             Width="200"
             Margin="5,0,0,0"
-            Source="{Binding Path=Image}" />
+            Source="{Binding Path=Image.Value}" />
         <TextBlock
             Grid.Row="2"
             Margin="5,0,0,0"
@@ -49,22 +49,22 @@
             Grid.Row="5"
             Margin="5,0,0,0"
             Text="{Binding Path=Link}" />
-        <Button
+        <!--<Button
             Grid.Row="6"
             Width="150"
             Height="30"
             Margin="10"
             Command="{Binding Path=CopyCommand}"
             CommandParameter="{Binding Path=Link}"
-            Content="Fun fact more info link (copy)" />
-        <Button
+            Content="Fun fact more info link (copy)" />-->
+        <!--<Button
             Grid.Row="7"
             Width="150"
             Height="30"
             Margin="10"
             Command="{Binding Path=UpdateFunFactCommand}"
             CommandParameter="{Binding Path=Item}"
-            Content="Edit" />
+            Content="Edit" />-->
         <!--<Button
             Grid.Row="8"
             Width="150"

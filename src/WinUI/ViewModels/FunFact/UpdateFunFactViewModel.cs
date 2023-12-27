@@ -41,22 +41,12 @@ public partial class UpdateFunFactViewModel : ObservableObject, IModalDialogView
 
         if (result is true)
         {
-            var fileName = Path.GetFileNameWithoutExtension(openImageDialogSettings.FileName);
-            var extension = Path.GetExtension(openImageDialogSettings.FileName);
+            var fileName = FileHelper.GetFullFileName(openImageDialogSettings.FileName);
 
-            var funFactFilePath = Path.Combine("images", fileName + extension);
-            var copyPath = Path.Combine(this.fileBasePath, funFactFilePath);
+            var bitmap = await FileHelper.GetBitmapImageAsync(openImageDialogSettings.FileName, cancellationToken);
 
-            var count = 0;
-
-            while(File.Exists(copyPath)) 
-            {
-                var tempFileName = $"{fileName}({count++})";
-                copyPath = Path.Combine(this.fileBasePath, "images", tempFileName + extension);
-            }
-
-            File.Copy(openImageDialogSettings.FileName, copyPath);
-            this.Item.Image = copyPath;
+            this.Item.Image.FileName = fileName;
+            this.Item.Image.Value = bitmap;
         }
 
         await Task.CompletedTask;

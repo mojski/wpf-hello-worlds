@@ -24,7 +24,6 @@ public partial class App : Application
         services.AddSingleton<IFunFactService, FunFactService>();
 
         services.AddSingleton<HelloViewModel>();
-        services.AddSingleton<DetailsFunFactViewModel>();
         services.AddSingleton<UpdateFunFactViewModel>();
         services.AddSingleton<string>(string.Empty);
         IServiceProvider provider = services.BuildServiceProvider();
