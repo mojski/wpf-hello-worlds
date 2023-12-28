@@ -7,6 +7,5 @@ namespace WinUI.Models
     {
         [ObservableProperty] private BitmapImage value = default;
         [ObservableProperty] private string fileName = string.Empty;
-
     }
 }

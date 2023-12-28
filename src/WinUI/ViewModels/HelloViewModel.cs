@@ -5,113 +5,58 @@ using MvvmDialogs.FrameworkDialogs.MessageBox;
 using MvvmDialogs.FrameworkDialogs.OpenFile;
 using MvvmDialogs.FrameworkDialogs.SaveFile;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Windows;
-using System.Windows.Media.Imaging;
 using WinUI.Models;
-using WinUI.Models.Entities;
 using WinUI.Models.Interfaces;
 using WinUI.ViewModels.FunFact;
 
-namespace WinUI.ViewModels
+namespace WinUI.ViewModels;
+
+public partial class HelloViewModel : ObservableObject
 {
-    public partial class HelloViewModel : ObservableObject
+    private readonly IDialogService dialogService;
+    private readonly IFunFactService funFactService;
+
+    private const string APPLICATION_NAME = "Hello Fun Fact Adder";
+
+    [ObservableProperty] private bool isClosed = default;
+    [ObservableProperty] private Models.FunFact selectedItem = default;
+    [ObservableProperty] private ObservableCollection<Models.FunFact> items = new ();
+
+    public HelloViewModel(IDialogService dialogService, IFunFactService funFactService)
     {
-        private readonly IDialogService dialogService;
-        private readonly IFunFactService funFactService;
+        this.dialogService = dialogService;
+        this.funFactService = funFactService;
 
-        private const string APPLICATION_NAME = "Hello Fun Fact Adder";
+        this.UpdateFunFactCommand = new AsyncRelayCommand<Models.FunFact>(this.UpdateFunFactAsync);
+        this.CreateFunFactCommand = new AsyncRelayCommand(this.CreateFunFactAsync);
 
-        [ObservableProperty] private string fileBasePath = default;
-        [ObservableProperty] private bool isClosed = default;
-        [ObservableProperty] private Models.FunFact selectedItem = default;
-        [ObservableProperty] private ObservableCollection<Models.FunFact> items = new ();
+        this.FileLoadCommand = new AsyncRelayCommand(this.FileLoadAsync);
+        this.FileSaveCommand = new AsyncRelayCommand(this.FileSaveAsync);
+        this.FileExitCommand = new AsyncRelayCommand(this.FileExitAsync);
+    }
 
-        public HelloViewModel(IDialogService dialogService, IFunFactService funFactService)
+    private async Task FileLoadAsync(CancellationToken cancellationToken)
+    {
+        var openFileDialogSettings = new OpenFileDialogSettings
         {
-            this.dialogService = dialogService;
-            this.funFactService = funFactService;
+            CheckFileExists = true, 
+            Filter = "CSV Files (*.json)|*.json|All Files|*.*",
+        };
 
-            this.UpdateFunFactCommand = new AsyncRelayCommand<Models.FunFact>(this.UpdateFunFactAsync);
-            this.CreateFunFactCommand = new AsyncRelayCommand(this.CreateFunFactAsync);
+        var result = this.dialogService.ShowOpenFileDialog(this, openFileDialogSettings);
 
-            this.FileLoadCommand = new AsyncRelayCommand(this.FileLoadAsync);
-            this.FileSaveCommand = new AsyncRelayCommand(this.FileSaveAsync);
-            this.FileExitCommand = new AsyncRelayCommand(this.FileExitAsync);
-        }
-
-        private async Task FileLoadAsync(CancellationToken cancellationToken)
-        {
-            var openFileDialogSettings = new OpenFileDialogSettings
-            {
-                CheckFileExists = true, 
-                Filter = "CSV Files (*.json)|*.json|All Files|*.*",
-            };
-
-            var result = this.dialogService.ShowOpenFileDialog(this, openFileDialogSettings);
-
-            if (result is true)
-            {
-                try
-                {
-                    this.Items.Clear();
-
-                    var entities = await this.funFactService.ListAsync(openFileDialogSettings.FileName, cancellationToken);
-
-                    foreach (var entity in entities) // TODO load images by demand
-                    {
-                        var model = entity.ToFunFact();
-
-                        var imageFileName = FileHelper.GetFullFileName(entity.Image);
-                        var imagePhysicalPath =
-                            FileHelper.GetImagePhysicalPath(openFileDialogSettings.FileName, imageFileName);
-
-                        var bitmap = await FileHelper.GetBitmapImageAsync(imagePhysicalPath, cancellationToken);
-
-                        model.Image = new Image
-                        {
-                            FileName = imageFileName,
-                            Value = bitmap,
-                        };
-
-                        this.Items.Add(model);
-                    }
-
-                    var fileDirectory = new FileInfo(openFileDialogSettings.FileName).Directory.FullName;
-                    this.FileBasePath = fileDirectory;
-                }
-                catch (Exception exception)
-                {
-                    var messageBoxSettings = new MessageBoxSettings
-                    {
-                        MessageBoxText = exception.Message,
-                        Caption = APPLICATION_NAME,
-                        Icon = MessageBoxImage.Error,
-                        Button = MessageBoxButton.OK,
-                    };
-
-                    _ = this.dialogService.ShowMessageBox(this, messageBoxSettings);
-                }
-            }
-        }
-
-        private async Task FileSaveAsync(CancellationToken cancellationToken)
+        if (result is true)
         {
             try
             {
-                var saveFileDialogSettings = new SaveFileDialogSettings()
-                {
-                    CheckPathExists = true,
-                    Filter = "CSV Files (*.json)|*.json|All Files|*.*",
-                    DefaultExt = ".json"
-                };
+                this.Items.Clear();
 
-                var result = this.dialogService.ShowSaveFileDialog(this, saveFileDialogSettings);
+                var funFacts = await this.funFactService.ListAsync(openFileDialogSettings.FileName, cancellationToken);
 
-                if (result is true)
+                foreach (var funFact in funFacts)
                 {
-                    var entities = this.Items.Select(FunFactEntity.FromFunFact);
-                    await this.funFactService.UpdateAsync(entities, saveFileDialogSettings.FileName, cancellationToken);
+                    this.Items.Add(funFact);
                 }
             }
             catch (Exception exception)
@@ -127,89 +72,113 @@ namespace WinUI.ViewModels
                 _ = this.dialogService.ShowMessageBox(this, messageBoxSettings);
             }
         }
+    }
 
-        private async Task FileExitAsync(CancellationToken cancellationToken)
+    private async Task FileSaveAsync(CancellationToken cancellationToken)
+    {
+        try
         {
-            this.IsClosed = true;
-            await Task.CompletedTask;
-        }
-
-        private async Task CreateFunFactAsync( CancellationToken cancellationToken)
-        {
-            if (this.FileBasePath is null || this.FileBasePath.Length == 0)
+            var saveFileDialogSettings = new SaveFileDialogSettings()
             {
-                var messageBoxSettings = new MessageBoxSettings
-                {
-                    MessageBoxText = "You can not add fun facts to empty list.",
-                    Caption = APPLICATION_NAME,
-                    Icon = MessageBoxImage.Error,
-                    Button = MessageBoxButton.OK,
-                };
-
-                _ = this.dialogService.ShowMessageBox(this, messageBoxSettings);
-
-                return;
-            }
-
-            var emptyModel = new Models.FunFact();
-            var viewModel = new UpdateFunFactViewModel(this.dialogService, fileBasePath) { Item = emptyModel };
-
-            var result = this.dialogService.ShowDialog(this, viewModel);
-
-            if (result is true)
-            {
-                var nextId = Items.Any() ? Items.Max(x=>x.Id) + 1 : 1;
-                var newModel = new Models.FunFact
-                {
-                    Id = nextId,
-                    Title = viewModel.Item.Title,
-                    Content = viewModel.Item.Content,
-                    Link = viewModel.Item.Link,
-                    Image = viewModel.Item.Image,
-                    RelatedMovies = viewModel.Item.RelatedMovies,
-                };
-
-                Items.Add(newModel);
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task UpdateFunFactAsync(Models.FunFact? parameter, CancellationToken cancellationToken = default)
-        {
-            ArgumentNullException.ThrowIfNull(parameter);
-
-            var copy = new Models.FunFact
-            {
-                Content = parameter.Content, 
-                Title = parameter.Title, 
-                Image = parameter.Image,
-                Link = parameter.Link,
-                RelatedMovies = parameter.RelatedMovies,
-                Id = parameter.Id,
+                CheckPathExists = true,
+                Filter = "CSV Files (*.json)|*.json|All Files|*.*",
+                DefaultExt = ".json"
             };
 
-            var viewModel = new UpdateFunFactViewModel(this.dialogService, this.fileBasePath) { Item = copy };
-
-            var result = this.dialogService.ShowDialog(this, viewModel);
+            var result = this.dialogService.ShowSaveFileDialog(this, saveFileDialogSettings);
 
             if (result is true)
             {
-                parameter.Title = viewModel.Item.Title;
-                parameter.Content = viewModel.Item.Content;
-                parameter.Link = viewModel.Item.Link;
-                parameter.Image = viewModel.Item.Image;
-                parameter.RelatedMovies = viewModel.Item.RelatedMovies;
+                await this.funFactService.UpdateAsync(Items, saveFileDialogSettings.FileName, cancellationToken);
             }
+        }
+        catch (Exception exception)
+        {
+            var messageBoxSettings = new MessageBoxSettings
+            {
+                MessageBoxText = exception.Message,
+                Caption = APPLICATION_NAME,
+                Icon = MessageBoxImage.Error,
+                Button = MessageBoxButton.OK,
+            };
 
-            await Task.CompletedTask;
+            _ = this.dialogService.ShowMessageBox(this, messageBoxSettings);
+        }
+    }
+
+    private async Task FileExitAsync(CancellationToken cancellationToken)
+    {
+        this.IsClosed = true;
+        await Task.CompletedTask;
+    }
+
+    private async Task CreateFunFactAsync( CancellationToken cancellationToken)
+    {
+        var emptyModel = new Models.FunFact();
+        var imagePlugin = await FileHelper.GetImagePlugAsync(cancellationToken);
+
+        emptyModel.Image = new Image
+        {
+            FileName = "plugin.png",
+            Value = imagePlugin,
+        };
+
+        var viewModel = new UpdateFunFactViewModel(this.dialogService) { Item = emptyModel };
+
+        var result = this.dialogService.ShowDialog(this, viewModel);
+
+        if (result is true)
+        {
+            var nextId = Items.Any() ? Items.Max(x=>x.Id) + 1 : 1;
+            var newModel = new Models.FunFact
+            {
+                Id = nextId,
+                Title = viewModel.Item.Title,
+                Content = viewModel.Item.Content,
+                Link = viewModel.Item.Link,
+                Image = viewModel.Item.Image,
+                RelatedMovies = viewModel.Item.RelatedMovies,
+            };
+
+            Items.Add(newModel);
         }
 
-
-        public IAsyncRelayCommand FileLoadCommand { get; }
-        public IAsyncRelayCommand FileSaveCommand { get; }
-        public IAsyncRelayCommand FileExitCommand { get; }
-        public IAsyncRelayCommand<Models.FunFact> UpdateFunFactCommand { get; }
-        public IAsyncRelayCommand CreateFunFactCommand { get; }
+        await Task.CompletedTask;
     }
+
+    private async Task UpdateFunFactAsync(Models.FunFact? parameter, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(parameter);
+
+        var copy = new Models.FunFact
+        {
+            Content = parameter.Content, 
+            Title = parameter.Title, 
+            Image = parameter.Image,
+            Link = parameter.Link,
+            RelatedMovies = parameter.RelatedMovies,
+            Id = parameter.Id,
+        };
+
+        var viewModel = new UpdateFunFactViewModel(this.dialogService) { Item = copy };
+
+        var result = this.dialogService.ShowDialog(this, viewModel);
+
+        if (result is true)
+        {
+            parameter.Title = viewModel.Item.Title;
+            parameter.Content = viewModel.Item.Content;
+            parameter.Link = viewModel.Item.Link;
+            parameter.Image = viewModel.Item.Image;
+            parameter.RelatedMovies = viewModel.Item.RelatedMovies;
+        }
+
+        await Task.CompletedTask;
+    }
+
+    public IAsyncRelayCommand FileLoadCommand { get; }
+    public IAsyncRelayCommand FileSaveCommand { get; }
+    public IAsyncRelayCommand FileExitCommand { get; }
+    public IAsyncRelayCommand<Models.FunFact> UpdateFunFactCommand { get; }
+    public IAsyncRelayCommand CreateFunFactCommand { get; }
 }

@@ -4,5 +4,4 @@
     xmlns:system="clr-namespace:System;assembly=System.Runtime">
     <ImageSource x:Key="WindowIcon">../Resources/favicon.ico</ImageSource>
     <system:String x:Key="MainWindowTitle">Welcome to Hello FunFact manager</system:String>
-
 </ResourceDictionary>

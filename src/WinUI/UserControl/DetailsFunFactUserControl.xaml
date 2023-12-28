@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:WinUI.Models"
+    xmlns:valueConverters="clr-namespace:WinUI.ValueConverters"
     d:DataContext="{d:DesignInstance models:FunFact,
                                      IsDesignTimeCreatable=True}"
     d:DesignHeight="450"
@@ -39,38 +40,10 @@
             Margin="5,0,0,0"
             Text="{Binding Path=Content}"
             TextWrapping="WrapWithOverflow" />
-        <Separator Grid.Row="3" Margin="10" />
-        <Label
-            Grid.Row="4"
-            Grid.Column="0"
-            Margin="5,0,0,0"
-            Content="Related link:" />
+
         <TextBlock
             Grid.Row="5"
             Margin="5,0,0,0"
             Text="{Binding Path=Link}" />
-        <!--<Button
-            Grid.Row="6"
-            Width="150"
-            Height="30"
-            Margin="10"
-            Command="{Binding Path=CopyCommand}"
-            CommandParameter="{Binding Path=Link}"
-            Content="Fun fact more info link (copy)" />-->
-        <!--<Button
-            Grid.Row="7"
-            Width="150"
-            Height="30"
-            Margin="10"
-            Command="{Binding Path=UpdateFunFactCommand}"
-            CommandParameter="{Binding Path=Item}"
-            Content="Edit" />-->
-        <!--<Button
-            Grid.Row="8"
-            Width="150"
-            Height="30"
-            Margin="10"
-            Command="{Binding Path=CloseCommand}"
-            Content="Close" />-->
     </Grid>
 </UserControl>

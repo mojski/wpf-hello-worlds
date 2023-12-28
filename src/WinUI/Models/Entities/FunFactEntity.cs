@@ -32,7 +32,13 @@ namespace WinUI.Models.Entities
 
         public static FunFactEntity FromFunFact(FunFact funFact)
         {
-            var imageJsonPath = FileHelper.GetJsonFilePath(funFact.Image.FileName);
+            string imageJsonPath = string.Empty;
+
+            if (funFact.Image is not null)
+            {
+                imageJsonPath = FileHelper.GetImageJsonFilePath(funFact.Image.FileName);
+            }
+            
             return new FunFactEntity
             {
                 Id = funFact.Id.Value,

@@ -1,5 +1,4 @@
-﻿using System.IO;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MvvmDialogs;
 using MvvmDialogs.FrameworkDialogs.OpenFile;
@@ -10,12 +9,9 @@ public partial class UpdateFunFactViewModel : ObservableObject, IModalDialogView
 {
     private readonly IDialogService dialogService;
 
-    private string fileBasePath = default;
-
-    public UpdateFunFactViewModel(IDialogService dialogService, string dataBasePath)
+    public UpdateFunFactViewModel(IDialogService dialogService)
     {
         this.dialogService = dialogService;
-        this.fileBasePath = dataBasePath;
 
         this.ImageUploadCommand = new AsyncRelayCommand(this.UploadImageAsync);
 
@@ -34,7 +30,7 @@ public partial class UpdateFunFactViewModel : ObservableObject, IModalDialogView
         var openImageDialogSettings = new OpenFileDialogSettings
         {
             CheckFileExists = true, 
-            Filter = "PNG Files (*.png)|*.png",
+            Filter = "JPG Files (*.jpg, jpeg)|*.jpg;*.jpeg",
         };
 
         var result = this.dialogService.ShowOpenFileDialog(this, openImageDialogSettings);

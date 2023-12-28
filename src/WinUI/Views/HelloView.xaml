@@ -9,6 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
     xmlns:userControl="clr-namespace:WinUI.UserControl"
+    xmlns:valueConverters="clr-namespace:WinUI.ValueConverters"
     xmlns:viewModels="clr-namespace:WinUI.ViewModels"
     Title="{DynamicResource MainWindowTitle}"
     Width="800"
@@ -84,10 +85,12 @@
                 </i:EventTrigger>
             </b:Interaction.Triggers>
         </DataGrid>
-        <userControl:DetailsFunFactUserControl
-            Grid.Row="2"
-            Grid.Column="1"
-            DataContext="{Binding Path=SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <StackPanel Grid.Row="2" Grid.Column="1">
+            <StackPanel.Resources>
+                <valueConverters:NullVisibilityConverter x:Key="Converter" />
+            </StackPanel.Resources>
+            <userControl:DetailsFunFactUserControl DataContext="{Binding Path=SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
         <StackPanel
             Grid.Row="3"
             Grid.Column="0"

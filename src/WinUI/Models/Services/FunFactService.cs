@@ -7,22 +7,50 @@ namespace WinUI.Models.Services
 {
     public sealed class FunFactService : IFunFactService
     {
-        public async  Task<IEnumerable<FunFactEntity>> ListAsync(string filePath, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<FunFact>> ListAsync(string filePath, CancellationToken cancellationToken = default)
         {
             var fileContent = await File.ReadAllTextAsync(filePath, cancellationToken);
             var entities = JsonConvert.DeserializeObject<IEnumerable<FunFactEntity>>(fileContent);
-            return entities;
+
+            var funFacts = new List<FunFact>();
+
+            foreach (var entity in entities) // TODO load images by demand
+            {
+                var imageFileName = FileHelper.GetFullFileName(entity.Image);
+                var imagePhysicalPath =
+                    FileHelper.GetImagePhysicalPath(filePath, imageFileName);
+
+                var bitmap = await FileHelper.GetBitmapImageAsync(imagePhysicalPath, cancellationToken);
+
+                var model = entity.ToFunFact();
+
+                model.Image = new Image
+                {
+                    FileName = imageFileName,
+                    Value = bitmap,
+                };
+
+                funFacts.Add(model);
+            }
+            return funFacts;
         }
 
-        public async Task UpdateAsync(IEnumerable<FunFactEntity> entities, string filePath, CancellationToken cancellationToken = default)
+        public async Task UpdateAsync(IEnumerable<FunFact> funFacts, string filePath, CancellationToken cancellationToken = default)
         {
-            var json = JsonConvert.SerializeObject(entities);
-
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
             }
 
+            var enumerable = funFacts.ToList();
+
+            foreach (var funFact in enumerable)
+            {
+                await FileHelper.SaveImageAndGetFileNameAsync(funFact.Image.Value, funFact.Image.FileName, filePath, cancellationToken);
+            }
+
+            var entities = enumerable.Select(FunFactEntity.FromFunFact);
+            var json = JsonConvert.SerializeObject(entities);
             await File.WriteAllTextAsync(filePath!, json, cancellationToken);
         }
     }
