@@ -19,9 +19,8 @@ public partial class HelloViewModel : ObservableObject
 
     private const string APPLICATION_NAME = "Hello Fun Fact Adder";
 
-    private string openedFilePath = string.Empty;
-    private bool collectionChanged = default;
-
+    [ObservableProperty] private string openedFilePath = string.Empty;
+    [ObservableProperty] private bool collectionChanged = default;
     [ObservableProperty] private bool isClosed = default;
     [ObservableProperty] private Models.FunFact selectedItem = default;
     [ObservableProperty] private ObservableCollection<Models.FunFact> items = new ();
@@ -116,12 +115,12 @@ public partial class HelloViewModel : ObservableObject
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(openedFilePath) || collectionChanged is false)
+            if (string.IsNullOrWhiteSpace(this.OpenedFilePath) || this.CollectionChanged is false)
             {
                 throw new Exception("No open file found or no changes performed");
             }
 
-            await this.funFactService.UpdateAsync(Items, openedFilePath, cancellationToken);
+            await this.funFactService.UpdateAsync(Items, this.OpenedFilePath, cancellationToken);
         }
         catch (Exception exception)
         {
@@ -139,7 +138,7 @@ public partial class HelloViewModel : ObservableObject
 
     private bool CanSaveCurrentAsync()
     {
-        //var result = string.IsNullOrWhiteSpace(openedFilePath) && collectionChanged;
+        //var result = string.IsNullOrWhiteSpace(this.OpenedFilePath) && this.CollectionChanged;
         //return result;
         return true; // TODO
     }

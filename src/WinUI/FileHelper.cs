@@ -18,12 +18,6 @@ public static class FileHelper
         return $"/{IMAGES_FOLDER}/{fileName}";
     }
 
-    public static string GetBaseFolderPath(string loadFilePath)
-    {
-        var folder = Path.GetDirectoryName(loadFilePath);
-        return Path.Combine(folder!);
-    }
-
     public static string GetImagePhysicalPath(string jsonPath, string imageName)
     {
         var fileName = Path.GetFileName(imageName);
@@ -74,5 +68,11 @@ public static class FileHelper
 
         await using var fileStream = new FileStream(saveImagePath, FileMode.Create);
         encoder.Save(fileStream);
+    }
+
+    private static string GetBaseFolderPath(string loadFilePath)
+    {
+        var folder = Path.GetDirectoryName(loadFilePath);
+        return Path.Combine(folder!);
     }
 }

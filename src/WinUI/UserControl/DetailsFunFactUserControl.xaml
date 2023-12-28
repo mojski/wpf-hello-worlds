@@ -5,16 +5,22 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:WinUI.Models"
+    xmlns:valueConverters="clr-namespace:WinUI.ValueConverters"
     d:DataContext="{d:DesignInstance models:FunFact,
                                      IsDesignTimeCreatable=True}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
+        <Grid.Resources>
+            <valueConverters:NullVisibilityConverter x:Key="NullVisibilityConverter" />
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock
@@ -33,10 +39,15 @@
             Margin="5,0,0,0"
             Text="{Binding Path=Content}"
             TextWrapping="WrapWithOverflow" />
-
+        <Separator Grid.Row="3" Visibility="{Binding Link, Converter={StaticResource NullVisibilityConverter}}" />
+        <Label
+            Grid.Row="4"
+            Content="Related link:"
+            Visibility="{Binding Link, Converter={StaticResource NullVisibilityConverter}}" />
         <TextBlock
-            Grid.Row="3"
+            Grid.Row="5"
             Margin="5,0,0,0"
             Text="{Binding Path=Link}" />
+
     </Grid>
 </UserControl>
