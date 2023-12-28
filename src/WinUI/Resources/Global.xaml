@@ -3,5 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:system="clr-namespace:System;assembly=System.Runtime">
     <ImageSource x:Key="WindowIcon">../Resources/favicon.ico</ImageSource>
+    <ImageSource x:Key="FloppyDiskIcon">../Resources/floppy.png</ImageSource>
+    <ImageSource x:Key="PlusIcon">../Resources/plus.png</ImageSource>
     <system:String x:Key="MainWindowTitle">Welcome to Hello FunFact manager</system:String>
 </ResourceDictionary>

@@ -52,7 +52,7 @@
             Grid.ColumnSpan="2">
             <MenuItem Header="File">
                 <MenuItem Command="{Binding Path=FileLoadCommand, Mode=OneWay}" Header="Load" />
-                <MenuItem Command="{Binding Path=FileSaveCommand, Mode=OneWay}" Header="Save" />
+                <MenuItem Command="{Binding Path=FileSaveCommand, Mode=OneWay}" Header="Save As" />
                 <Separator />
                 <MenuItem Command="{Binding Path=FileExitCommand, Mode=OneWay}" Header="Exit" />
             </MenuItem>
@@ -61,7 +61,18 @@
             Grid.Row="1"
             Grid.Column="0"
             Grid.ColumnSpan="2">
-            <Button Command="{Binding Path=CreateFunFactCommand, Mode=OneWay}" Content="+" />
+            <Button Command="{Binding Path=CreateFunFactCommand, Mode=OneWay}">
+                <Image
+                    Width="15"
+                    Height="15"
+                    Source="{DynamicResource PlusIcon}" />
+            </Button>
+            <Button Command="{Binding Path=SaveCurrentCommand, Mode=OneWay}">
+                <Image
+                    Width="15"
+                    Height="15"
+                    Source="{DynamicResource FloppyDiskIcon}" />
+            </Button>
         </ToolBar>
         <DataGrid
             Grid.Row="2"

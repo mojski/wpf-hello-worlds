@@ -19,6 +19,9 @@ public partial class HelloViewModel : ObservableObject
 
     private const string APPLICATION_NAME = "Hello Fun Fact Adder";
 
+    private string openedFilePath = string.Empty;
+    private bool collectionChanged = default;
+
     [ObservableProperty] private bool isClosed = default;
     [ObservableProperty] private Models.FunFact selectedItem = default;
     [ObservableProperty] private ObservableCollection<Models.FunFact> items = new ();
@@ -30,6 +33,7 @@ public partial class HelloViewModel : ObservableObject
 
         this.UpdateFunFactCommand = new AsyncRelayCommand<Models.FunFact>(this.UpdateFunFactAsync);
         this.CreateFunFactCommand = new AsyncRelayCommand(this.CreateFunFactAsync);
+        this.SaveCurrentCommand = new AsyncRelayCommand(this.SaveCurrentAsync, this.CanSaveCurrentAsync);
 
         this.FileLoadCommand = new AsyncRelayCommand(this.FileLoadAsync);
         this.FileSaveCommand = new AsyncRelayCommand(this.FileSaveAsync);
@@ -58,6 +62,8 @@ public partial class HelloViewModel : ObservableObject
                 {
                     this.Items.Add(funFact);
                 }
+
+                openedFilePath = openFileDialogSettings.FileName;
             }
             catch (Exception exception)
             {
@@ -106,6 +112,38 @@ public partial class HelloViewModel : ObservableObject
         }
     }
 
+    private async Task SaveCurrentAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(openedFilePath) || collectionChanged is false)
+            {
+                throw new Exception("No open file found or no changes performed");
+            }
+
+            await this.funFactService.UpdateAsync(Items, openedFilePath, cancellationToken);
+        }
+        catch (Exception exception)
+        {
+            var messageBoxSettings = new MessageBoxSettings
+            {
+                MessageBoxText = exception.Message,
+                Caption = APPLICATION_NAME,
+                Icon = MessageBoxImage.Error,
+                Button = MessageBoxButton.OK,
+            };
+
+            _ = this.dialogService.ShowMessageBox(this, messageBoxSettings);
+        }
+    }
+
+    private bool CanSaveCurrentAsync()
+    {
+        //var result = string.IsNullOrWhiteSpace(openedFilePath) && collectionChanged;
+        //return result;
+        return true; // TODO
+    }
+
     private async Task FileExitAsync(CancellationToken cancellationToken)
     {
         this.IsClosed = true;
@@ -141,6 +179,7 @@ public partial class HelloViewModel : ObservableObject
             };
 
             Items.Add(newModel);
+            collectionChanged = true;
         }
 
         await Task.CompletedTask;
@@ -171,6 +210,8 @@ public partial class HelloViewModel : ObservableObject
             parameter.Link = viewModel.Item.Link;
             parameter.Image = viewModel.Item.Image;
             parameter.RelatedMovies = viewModel.Item.RelatedMovies;
+
+            collectionChanged = true;
         }
 
         await Task.CompletedTask;
@@ -178,6 +219,7 @@ public partial class HelloViewModel : ObservableObject
 
     public IAsyncRelayCommand FileLoadCommand { get; }
     public IAsyncRelayCommand FileSaveCommand { get; }
+    public IAsyncRelayCommand SaveCurrentCommand { get; }
     public IAsyncRelayCommand FileExitCommand { get; }
     public IAsyncRelayCommand<Models.FunFact> UpdateFunFactCommand { get; }
     public IAsyncRelayCommand CreateFunFactCommand { get; }

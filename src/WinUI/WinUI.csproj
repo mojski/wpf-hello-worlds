@@ -9,7 +9,9 @@
 
   <ItemGroup>
     <None Remove="Resources\favicon.ico" />
+    <None Remove="Resources\floppy.png" />
     <None Remove="Resources\noimg.png" />
+    <None Remove="Resources\plus.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +22,9 @@
     <Content Include="Resources\favicon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\floppy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\noimg.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -27,6 +32,9 @@
 
   <ItemGroup>
     <Content Include="Resources\Global.xaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\plus.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
