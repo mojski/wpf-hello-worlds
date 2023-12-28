@@ -5,7 +5,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:WinUI.Models"
-    xmlns:valueConverters="clr-namespace:WinUI.ValueConverters"
     d:DataContext="{d:DesignInstance models:FunFact,
                                      IsDesignTimeCreatable=True}"
     d:DesignHeight="450"
@@ -16,12 +15,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock
@@ -42,7 +35,7 @@
             TextWrapping="WrapWithOverflow" />
 
         <TextBlock
-            Grid.Row="5"
+            Grid.Row="3"
             Margin="5,0,0,0"
             Text="{Binding Path=Link}" />
     </Grid>

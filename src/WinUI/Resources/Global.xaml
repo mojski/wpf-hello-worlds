@@ -6,4 +6,16 @@
     <ImageSource x:Key="FloppyDiskIcon">../Resources/floppy.png</ImageSource>
     <ImageSource x:Key="PlusIcon">../Resources/plus.png</ImageSource>
     <system:String x:Key="MainWindowTitle">Welcome to Hello FunFact manager</system:String>
+    <Style x:Key="ButtonDefaultStyle" TargetType="Button">
+        <Setter Property="Width" Value="90" />
+        <Setter Property="Height" Value="30" />
+    </Style>
+    <Style x:Key="LabelDefaultStyle" TargetType="Label">
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="TextBoxDefaultStyle" TargetType="TextBox">
+        <Setter Property="Margin" Value="2" />
+    </Style>
 </ResourceDictionary>

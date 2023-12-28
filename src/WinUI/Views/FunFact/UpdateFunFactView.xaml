@@ -48,39 +48,34 @@
         <Label
             Grid.Row="0"
             Grid.Column="0"
-            Margin="2"
-            HorizontalAlignment="Right"
             VerticalAlignment="Center"
-            VerticalContentAlignment="Center"
-            Content="Name :" />
+            Content="Name :"
+            Style="{DynamicResource LabelDefaultStyle}" />
         <TextBox
             Grid.Row="0"
             Grid.Column="1"
-            Margin="2"
             VerticalContentAlignment="Center"
+            Style="{DynamicResource TextBoxDefaultStyle}"
             Text="{Binding Path=Item.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <Label
             Grid.Row="1"
             Grid.Column="0"
             Margin="2"
-            HorizontalAlignment="Right"
             VerticalAlignment="Top"
-            VerticalContentAlignment="Center"
-            Content="Content :" />
+            Content="Content :"
+            Style="{DynamicResource LabelDefaultStyle}" />
         <TextBox
             Grid.Row="1"
             Grid.Column="1"
-            Margin="2"
+            Style="{DynamicResource TextBoxDefaultStyle}"
             Text="{Binding Path=Item.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="WrapWithOverflow" />
         <Label
             Grid.Row="2"
             Grid.Column="0"
-            Margin="2"
-            HorizontalAlignment="Right"
             VerticalAlignment="Center"
-            VerticalContentAlignment="Center"
-            Content="Image :" />
+            Content="Image :"
+            Style="{DynamicResource LabelDefaultStyle}" />
         <Image
             Grid.Row="2"
             Grid.Column="1"
@@ -94,16 +89,14 @@
         <Label
             Grid.Row="3"
             Grid.Column="0"
-            Margin="2"
-            HorizontalAlignment="Right"
             VerticalAlignment="Center"
-            VerticalContentAlignment="Center"
-            Content="Related link :" />
+            Content="Related link :"
+            Style="{DynamicResource LabelDefaultStyle}" />
         <TextBox
             Grid.Row="3"
             Grid.Column="1"
-            Margin="2"
             VerticalContentAlignment="Center"
+            Style="{DynamicResource TextBoxDefaultStyle}"
             Text="{Binding Path=Item.Link, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <DataGrid
@@ -123,16 +116,14 @@
             Orientation="Horizontal">
 
             <Button
-                Width="90"
-                Height="30"
                 Command="{Binding Path=OkCommand, Mode=OneWay}"
-                Content="OK" />
+                Content="OK"
+                Style="{DynamicResource ButtonDefaultStyle}" />
             <Button
-                Width="90"
-                Height="30"
                 Margin="5,0,0,0"
                 Command="{Binding Path=CancelCommand, Mode=OneWay}"
-                Content="Cancel" />
+                Content="Cancel"
+                Style="{DynamicResource ButtonDefaultStyle}" />
         </StackPanel>
 
     </Grid>
