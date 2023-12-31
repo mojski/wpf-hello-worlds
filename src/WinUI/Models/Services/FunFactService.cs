@@ -16,11 +16,11 @@ namespace WinUI.Models.Services
 
             foreach (var entity in entities) // TODO load images by demand
             {
-                var imageFileName = FileHelper.GetFullFileName(entity.Image);
+                var imageFileName = FileService.GetFullFileName(entity.Image);
                 var imagePhysicalPath =
-                    FileHelper.GetImagePhysicalPath(filePath, imageFileName);
+                    FileService.GetImagePhysicalPath(filePath, imageFileName);
 
-                var bitmap = await FileHelper.GetBitmapImageAsync(imagePhysicalPath, cancellationToken);
+                var bitmap = await FileService.GetBitmapImageAsync(imagePhysicalPath, cancellationToken);
 
                 var model = entity.ToFunFact();
 
@@ -46,7 +46,7 @@ namespace WinUI.Models.Services
 
             foreach (var funFact in enumerable)
             {
-                await FileHelper.SaveImageAndGetFileNameAsync(funFact.Image.Value, funFact.Image.FileName, filePath, cancellationToken);
+                await FileService.SaveImageAndGetFileNameAsync(funFact.Image.Value, funFact.Image.FileName, filePath, cancellationToken);
             }
 
             var entities = enumerable.Select(FunFactEntity.FromFunFact);

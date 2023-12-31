@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using MvvmDialogs;
 using MvvmDialogs.FrameworkDialogs.OpenFile;
+using WinUI.Models.Services;
 
 namespace WinUI.ViewModels.FunFact;
 
@@ -37,9 +38,9 @@ public partial class UpdateFunFactViewModel : ObservableObject, IModalDialogView
 
         if (result is true)
         {
-            var fileName = FileHelper.GetFullFileName(openImageDialogSettings.FileName);
+            var fileName = FileService.GetFullFileName(openImageDialogSettings.FileName);
 
-            var bitmap = await FileHelper.GetBitmapImageAsync(openImageDialogSettings.FileName, cancellationToken);
+            var bitmap = await FileService.GetBitmapImageAsync(openImageDialogSettings.FileName, cancellationToken);
 
             this.Item.Image.FileName = fileName;
             this.Item.Image.Value = bitmap;

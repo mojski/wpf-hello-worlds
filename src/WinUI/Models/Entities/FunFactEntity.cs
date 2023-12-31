@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using WinUI.Models.Services;
 
 namespace WinUI.Models.Entities
 {
@@ -36,7 +37,7 @@ namespace WinUI.Models.Entities
 
             if (funFact.Image is not null)
             {
-                imageJsonPath = FileHelper.GetImageJsonFilePath(funFact.Image.FileName);
+                imageJsonPath = FileService.GetImageJsonFilePath(funFact.Image.FileName);
             }
             
             return new FunFactEntity

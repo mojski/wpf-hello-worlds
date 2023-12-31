@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using System.Windows.Media.Imaging;
 
-namespace WinUI;
+namespace WinUI.Models.Services;
 
-public static class FileHelper
+public static class FileService
 {
     private const string IMAGES_FOLDER = "images";
     private const string RESOURCES_FOLDER = "Resources";

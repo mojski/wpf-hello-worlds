@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using WinUI.Models;
 using WinUI.Models.Interfaces;
+using WinUI.Models.Services;
 using WinUI.ViewModels.FunFact;
 
 namespace WinUI.ViewModels;
@@ -152,7 +153,7 @@ public partial class HelloViewModel : ObservableObject
     private async Task CreateFunFactAsync( CancellationToken cancellationToken)
     {
         var emptyModel = new Models.FunFact();
-        var imagePlugin = await FileHelper.GetImagePlugAsync(cancellationToken);
+        var imagePlugin = await FileService.GetImagePlugAsync(cancellationToken);
 
         emptyModel.Image = new Image
         {
