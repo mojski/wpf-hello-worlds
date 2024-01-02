@@ -6,7 +6,7 @@ namespace WinUI.Models.Services;
 public static class FileService
 {
     private const string IMAGES_FOLDER = "images";
-    private const string RESOURCES_FOLDER = "Resources";
+    private const string RESOURCES_FOLDER = @"Resources\Assets\Images";
     private const string FUN_FACT_IMAGE_PLUG = "noimg.png";
 
     public static string GetFullFileName(string filePath) => Path.GetFileName(filePath);

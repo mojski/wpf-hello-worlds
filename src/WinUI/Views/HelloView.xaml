@@ -68,10 +68,10 @@
                     Source="{DynamicResource PlusIcon}" />
             </Button>
             <Button Command="{Binding Path=SaveCurrentCommand, Mode=OneWay}">
-                <Image
+                <userControl:IconEmbedder
                     Width="15"
                     Height="15"
-                    Source="{DynamicResource FloppyDiskIcon}" />
+                    Icon="Save_grey_16x" />
             </Button>
         </ToolBar>
         <DataGrid

@@ -8,35 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\favicon.ico" />
-    <None Remove="Resources\floppy.png" />
-    <None Remove="Resources\noimg.png" />
-    <None Remove="Resources\plus.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Remove="Resources\Global.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Resources\favicon.ico">
+    <Content Include="Resources\Assets\*\*.*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\floppy.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\noimg.png">
+    <Content Include="Resources\*.*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\Global.xaml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\plus.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Resources\Assets\Images\noimg.png" />
   </ItemGroup>
 
   <ItemGroup>

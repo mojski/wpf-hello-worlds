@@ -2,9 +2,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:system="clr-namespace:System;assembly=System.Runtime">
-    <ImageSource x:Key="WindowIcon">../Resources/favicon.ico</ImageSource>
-    <ImageSource x:Key="FloppyDiskIcon">../Resources/floppy.png</ImageSource>
-    <ImageSource x:Key="PlusIcon">../Resources/plus.png</ImageSource>
+    <ImageSource x:Key="WindowIcon">../Resources/Assets/Icons/favicon.ico</ImageSource>
+    <ImageSource x:Key="PlusIcon">../Resources/Assets/Icons/AddClause_16x.png</ImageSource>
     <system:String x:Key="MainWindowTitle">Welcome to Hello FunFact manager</system:String>
     <Style x:Key="ButtonDefaultStyle" TargetType="Button">
         <Setter Property="Width" Value="90" />
