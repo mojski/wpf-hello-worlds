@@ -67,6 +67,7 @@
         <TextBox
             Grid.Row="1"
             Grid.Column="1"
+            SpellCheck.IsEnabled="True"
             Style="{DynamicResource TextBoxDefaultStyle}"
             Text="{Binding Path=Item.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="WrapWithOverflow" />
