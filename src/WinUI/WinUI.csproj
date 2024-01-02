@@ -5,6 +5,7 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +17,7 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
+    <ItemGroup>
     <Content Include="Resources\Assets\Images\noimg.png" />
   </ItemGroup>
 
@@ -29,6 +30,19 @@
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
     <PackageReference Include="MvvmDialogs" Version="9.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Resources\Default.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Content>
+    <Content Update="Resources\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\Assets\Icons\" />
   </ItemGroup>
 
 </Project>

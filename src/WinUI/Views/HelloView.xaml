@@ -17,7 +17,6 @@
     d:DataContext="{d:DesignInstance viewModels:HelloViewModel,
                                      IsDesignTimeCreatable=True}"
     md:DialogServiceViews.IsRegistered="True"
-    Icon="{DynamicResource WindowIcon}"
     mc:Ignorable="d">
     <Window.Style>
         <Style>
@@ -31,7 +30,8 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/Global.xaml" />
+                <ResourceDictionary Source="../Resources/Default.xaml" />
+                <ResourceDictionary Source="../Resources/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -65,13 +65,13 @@
                 <Image
                     Width="15"
                     Height="15"
-                    Source="{DynamicResource PlusIcon}" />
+                    Source="{DynamicResource AddFunFactIcon}" />
             </Button>
             <Button Command="{Binding Path=SaveCurrentCommand, Mode=OneWay}">
-                <userControl:IconEmbedder
+                <Image
                     Width="15"
                     Height="15"
-                    Icon="Save_grey_16x" />
+                    Source="{DynamicResource SaveIcon}" />
             </Button>
         </ToolBar>
         <DataGrid
