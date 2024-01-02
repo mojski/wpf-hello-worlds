@@ -33,6 +33,7 @@ public partial class HelloViewModel : ObservableObject
 
         this.UpdateFunFactCommand = new AsyncRelayCommand<Models.FunFact>(this.UpdateFunFactAsync);
         this.CreateFunFactCommand = new AsyncRelayCommand(this.CreateFunFactAsync);
+        this.DeleteFunFactCommand = new AsyncRelayCommand<Models.FunFact>(this.DeleteFunFactAsync);
         this.SaveCurrentCommand = new AsyncRelayCommand(this.SaveCurrentAsync, this.CanSaveCurrentAsync);
 
         this.FileLoadCommand = new AsyncRelayCommand(this.FileLoadAsync);
@@ -63,7 +64,7 @@ public partial class HelloViewModel : ObservableObject
                     this.Items.Add(funFact);
                 }
 
-                openedFilePath = openFileDialogSettings.FileName;
+                this.OpenedFilePath = openFileDialogSettings.FileName;
             }
             catch (Exception exception)
             {
@@ -179,7 +180,7 @@ public partial class HelloViewModel : ObservableObject
             };
 
             Items.Add(newModel);
-            collectionChanged = true;
+            this.CollectionChanged = true;
         }
 
         await Task.CompletedTask;
@@ -211,8 +212,29 @@ public partial class HelloViewModel : ObservableObject
             parameter.Image = viewModel.Item.Image;
             parameter.RelatedMovies = viewModel.Item.RelatedMovies;
 
-            collectionChanged = true;
+            this.CollectionChanged = true;
         }
+
+        await Task.CompletedTask;
+    }
+
+    private async Task DeleteFunFactAsync(Models.FunFact? parameter, CancellationToken cancellationToken = default)
+    {
+        if (parameter is null)
+        {
+            var messageBoxSettings = new MessageBoxSettings
+            {
+                MessageBoxText = "Choose fun fact first!",
+                Caption = APPLICATION_NAME,
+                Icon = MessageBoxImage.Error,
+                Button = MessageBoxButton.OK,
+            };
+
+            _ = this.dialogService.ShowMessageBox(this, messageBoxSettings);
+        }
+
+        Items.Remove(parameter);
+        this.CollectionChanged = true;
 
         await Task.CompletedTask;
     }
@@ -222,5 +244,6 @@ public partial class HelloViewModel : ObservableObject
     public IAsyncRelayCommand SaveCurrentCommand { get; }
     public IAsyncRelayCommand FileExitCommand { get; }
     public IAsyncRelayCommand<Models.FunFact> UpdateFunFactCommand { get; }
+    public IAsyncRelayCommand<Models.FunFact> DeleteFunFactCommand { get; }
     public IAsyncRelayCommand CreateFunFactCommand { get; }
 }

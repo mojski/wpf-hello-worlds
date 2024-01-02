@@ -50,11 +50,43 @@
             Grid.Row="0"
             Grid.Column="0"
             Grid.ColumnSpan="2">
+
             <MenuItem Header="File">
-                <MenuItem Command="{Binding Path=FileLoadCommand, Mode=OneWay}" Header="Load" />
-                <MenuItem Command="{Binding Path=FileSaveCommand, Mode=OneWay}" Header="Save As" />
-                <Separator />
-                <MenuItem Command="{Binding Path=FileExitCommand, Mode=OneWay}" Header="Exit" />
+                <MenuItem Command="{Binding Path=FileLoadCommand, Mode=OneWay}">
+                    <MenuItem.Header>
+                        <ContentPresenter Content="Load" />
+                    </MenuItem.Header>
+                    <MenuItem.Icon>
+                        <Image
+                            Width="15"
+                            Height="15"
+                            Source="{DynamicResource OpenFile}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Command="{Binding Path=FileSaveCommand, Mode=OneWay}">
+                    <MenuItem.Header>
+                        <ContentPresenter Content="Save As" />
+                    </MenuItem.Header>
+                    <MenuItem.Icon>
+                        <Image
+                            Width="15"
+                            Height="15"
+                            Source="{DynamicResource SaveIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Command="{Binding Path=FileExitCommand, Mode=OneWay}">
+                    <MenuItem.Header>
+                        <ContentPresenter Content="Exit" />
+                    </MenuItem.Header>
+                    <MenuItem.Icon>
+                        <Image
+                            Width="15"
+
+                            Height="15"
+                            Source="{DynamicResource CloseProgram}" />
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
         </Menu>
         <ToolBar
@@ -66,6 +98,12 @@
                     Width="15"
                     Height="15"
                     Source="{DynamicResource AddFunFactIcon}" />
+            </Button>
+            <Button Command="{Binding Path=DeleteFunFactCommand, Mode=OneWay}" CommandParameter="{Binding Path=SelectedItem}">
+                <Image
+                    Width="15"
+                    Height="15"
+                    Source="{DynamicResource DeleteFunFactIcon}" />
             </Button>
             <Button Command="{Binding Path=SaveCurrentCommand, Mode=OneWay}">
                 <Image
