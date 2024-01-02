@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="WinUI.UserControl.TopToolBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewModels="clr-namespace:WinUI.ViewModels"
+             d:DataContext="{d:DesignInstance viewModels:HelloViewModel,
+                                 IsDesignTimeCreatable=True}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <ToolBar>
+        <Button Command="{Binding Path=CreateFunFactCommand, Mode=OneWay}">
+            <Image
+                Width="15"
+                Height="15"
+                Source="{DynamicResource AddFunFactIcon}" />
+        </Button>
+        <Button Command="{Binding Path=DeleteFunFactCommand, Mode=OneWay}" CommandParameter="{Binding Path=SelectedItem}">
+            <Image
+                Width="15"
+                Height="15"
+                Source="{DynamicResource DeleteFunFactIcon}" />
+        </Button>
+        <Button Command="{Binding Path=SaveCurrentCommand, Mode=OneWay}">
+            <Image
+                Width="15"
+                Height="15"
+                Source="{DynamicResource SaveIcon}" />
+        </Button>
+    </ToolBar>
+</UserControl>

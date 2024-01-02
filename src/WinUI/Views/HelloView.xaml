@@ -46,72 +46,14 @@
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Menu
+        <userControl:TopMenu
             Grid.Row="0"
             Grid.Column="0"
-            Grid.ColumnSpan="2">
-
-            <MenuItem Header="File">
-                <MenuItem Command="{Binding Path=FileLoadCommand, Mode=OneWay}">
-                    <MenuItem.Header>
-                        <ContentPresenter Content="Load" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <Image
-                            Width="15"
-                            Height="15"
-                            Source="{DynamicResource OpenFile}" />
-                    </MenuItem.Icon>
-                </MenuItem>
-
-                <MenuItem Command="{Binding Path=FileSaveCommand, Mode=OneWay}">
-                    <MenuItem.Header>
-                        <ContentPresenter Content="Save As" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <Image
-                            Width="15"
-                            Height="15"
-                            Source="{DynamicResource SaveIcon}" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Command="{Binding Path=FileExitCommand, Mode=OneWay}">
-                    <MenuItem.Header>
-                        <ContentPresenter Content="Exit" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <Image
-                            Width="15"
-
-                            Height="15"
-                            Source="{DynamicResource CloseProgram}" />
-                    </MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
-        </Menu>
-        <ToolBar
+            Grid.ColumnSpan="2" />
+        <userControl:TopToolBar
             Grid.Row="1"
             Grid.Column="0"
-            Grid.ColumnSpan="2">
-            <Button Command="{Binding Path=CreateFunFactCommand, Mode=OneWay}">
-                <Image
-                    Width="15"
-                    Height="15"
-                    Source="{DynamicResource AddFunFactIcon}" />
-            </Button>
-            <Button Command="{Binding Path=DeleteFunFactCommand, Mode=OneWay}" CommandParameter="{Binding Path=SelectedItem}">
-                <Image
-                    Width="15"
-                    Height="15"
-                    Source="{DynamicResource DeleteFunFactIcon}" />
-            </Button>
-            <Button Command="{Binding Path=SaveCurrentCommand, Mode=OneWay}">
-                <Image
-                    Width="15"
-                    Height="15"
-                    Source="{DynamicResource SaveIcon}" />
-            </Button>
-        </ToolBar>
+            Grid.ColumnSpan="2" />
         <DataGrid
             Grid.Row="2"
             Grid.Column="0"
