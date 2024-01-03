@@ -1,4 +1,4 @@
-﻿<Window
+﻿<syncfusion:RibbonWindow
     x:Class="WinUI.Views.HelloView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,6 +8,7 @@
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     xmlns:userControl="clr-namespace:WinUI.UserControl"
     xmlns:valueConverters="clr-namespace:WinUI.ValueConverters"
     xmlns:viewModels="clr-namespace:WinUI.ViewModels"
@@ -17,6 +18,7 @@
     d:DataContext="{d:DesignInstance viewModels:HelloViewModel,
                                      IsDesignTimeCreatable=True}"
     md:DialogServiceViews.IsRegistered="True"
+    ResizeMode="CanResizeWithGrip"
     mc:Ignorable="d">
     <Window.Style>
         <Style>
@@ -32,6 +34,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources/Default.xaml" />
                 <ResourceDictionary Source="../Resources/Icons.xaml" />
+                <ResourceDictionary Source="../Resources/Strings.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -46,14 +49,50 @@
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <userControl:TopMenu
+
+        <syncfusion:Ribbon
             Grid.Row="0"
             Grid.Column="0"
-            Grid.ColumnSpan="2" />
-        <userControl:TopToolBar
-            Grid.Row="1"
-            Grid.Column="0"
-            Grid.ColumnSpan="2" />
+            Grid.ColumnSpan="2">
+            <syncfusion:RibbonTab Caption="Home" IsChecked="True">
+                <syncfusion:RibbonBar Width="Auto" Header="{DynamicResource ResourceKey=FileRibbonName}">
+                    <syncfusion:RibbonButton
+                        Command="{Binding Path=FileLoadCommand}"
+                        Label="{DynamicResource ResourceKey=FileRibbonLoadLabel}"
+                        LargeIcon="{DynamicResource ResourceKey=OpenFileIcon}"
+                        SizeForm="Large" />
+                    <syncfusion:RibbonButton
+                        Command="{Binding Path=FileSaveCommand}"
+                        Label="{DynamicResource ResourceKey=FileRibbonSaveAsLabel}"
+                        LargeIcon="{DynamicResource ResourceKey=SaveFileIcon}"
+                        SizeForm="Large" />
+                    <syncfusion:RibbonButton
+                        Command="{Binding Path=FileExitCommand}"
+                        Label="{DynamicResource ResourceKey=FileRibbonExitLabel}"
+                        LargeIcon="{DynamicResource ResourceKey=CloseProgramIcon}"
+                        SizeForm="Large" />
+                </syncfusion:RibbonBar>
+            </syncfusion:RibbonTab>
+            <syncfusion:RibbonTab Caption="Edit" IsChecked="False">
+                <syncfusion:RibbonBar Width="Auto" Header="{DynamicResource ResourceKey=EditRibbonName}">
+                    <syncfusion:RibbonButton
+                        Command="{Binding Path=CreateFunFactCommand}"
+                        Label=""
+                        LargeIcon="{DynamicResource ResourceKey=AddFunFactIcon}"
+                        SizeForm="Large" />
+                    <syncfusion:RibbonButton
+                        Command="{Binding Path=DeleteFunFactCommand}"
+                        Label=""
+                        LargeIcon="{DynamicResource ResourceKey=DeleteFunFactIcon}"
+                        SizeForm="Large" />
+                    <syncfusion:RibbonButton
+                        Command="{Binding Path=SaveCurrentCommand}"
+                        Label=""
+                        LargeIcon="{DynamicResource ResourceKey=SaveIcon}"
+                        SizeForm="Large" />
+                </syncfusion:RibbonBar>
+            </syncfusion:RibbonTab>
+        </syncfusion:Ribbon>
         <DataGrid
             Grid.Row="2"
             Grid.Column="0"
@@ -86,7 +125,7 @@
             Grid.Row="3"
             Grid.Column="0"
             Grid.ColumnSpan="2">
-            <Label Content="Ready" />
+            <Label Content="{DynamicResource ResourceKey=FooterLabel}" />
         </StackPanel>
     </Grid>
-</Window>
+</syncfusion:RibbonWindow>

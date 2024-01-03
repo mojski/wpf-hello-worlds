@@ -48,6 +48,5 @@
             Grid.Row="5"
             Margin="5,0,0,0"
             Text="{Binding Path=Link}" />
-
     </Grid>
 </UserControl>

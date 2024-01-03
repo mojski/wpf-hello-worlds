@@ -1,5 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <DrawingImage x:Key="SaveIcon">
+    <DrawingImage x:Key="SaveFileIcon">
         <DrawingImage.Drawing>
             <DrawingGroup>
                 <DrawingGroup.Children>
@@ -33,7 +33,7 @@
             </DrawingGroup>
         </DrawingImage.Drawing>
     </DrawingImage>
-    <DrawingImage x:Key="OpenFile">
+    <DrawingImage x:Key="OpenFileIcon">
         <DrawingImage.Drawing>
             <DrawingGroup>
                 <DrawingGroup.Children>
@@ -46,7 +46,7 @@
             </DrawingGroup>
         </DrawingImage.Drawing>
     </DrawingImage>
-    <DrawingImage x:Key="CloseProgram">
+    <DrawingImage x:Key="CloseProgramIcon">
         <DrawingImage.Drawing>
             <DrawingGroup>
                 <DrawingGroup.Children>

@@ -1,0 +1,19 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:s="clr-namespace:System;assembly=mscorlib">
+    <s:String x:Key="MainWindowTitle">Welcome to the fun fact adder app</s:String>
+    <s:String x:Key="FileRibbonName">File</s:String>
+    <s:String x:Key="FileRibbonLoadLabel">Load</s:String>
+    <s:String x:Key="FileRibbonSaveAsLabel">Save As</s:String>
+    <s:String x:Key="FileRibbonExitLabel">Quit</s:String>
+    <s:String x:Key="EditRibbonName">Edit</s:String>
+    <s:String x:Key="FooterLabel">Ready</s:String>
+    <s:String x:Key="UpdateWindowTitle">Update</s:String>
+    <s:String x:Key="UpdateNameLabel">Name :</s:String>
+    <s:String x:Key="UpdateContentLabel">Content :</s:String>
+    <s:String x:Key="UpdateImageLabel">Image :</s:String>
+    <s:String x:Key="RelatedLinkLabel">Related link :</s:String>
+    <s:String x:Key="UpdateOkButtonContent">Ok</s:String>
+    <s:String x:Key="UpdateCancelButtonContent">Cancel</s:String>
+</ResourceDictionary>

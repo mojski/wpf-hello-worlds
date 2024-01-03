@@ -14,6 +14,11 @@ using WinUI.ViewModels;
 
 public partial class App : Application
 {
+    public App()
+    {
+        Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NAaF5cWWdCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWX5ec3RSQmlYV0B1X0o=");
+    }
+
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);

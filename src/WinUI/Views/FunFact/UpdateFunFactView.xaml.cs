@@ -1,10 +1,10 @@
-﻿using System.Windows;
-using CommunityToolkit.Mvvm.DependencyInjection;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using Syncfusion.Windows.Tools.Controls;
 using WinUI.ViewModels.FunFact;
 
 namespace WinUI.Views.FunFact
 {
-  public partial class UpdateFunFactView : Window
+  public partial class UpdateFunFactView : RibbonWindow
   {
     public UpdateFunFactView()
     {

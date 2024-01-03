@@ -1,19 +1,15 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using System.Windows;
+﻿namespace WinUI.Views;
+
+using CommunityToolkit.Mvvm.DependencyInjection;
+using Syncfusion.Windows.Tools.Controls;
 using WinUI.ViewModels;
 
-namespace WinUI.Views
+public partial class HelloView : RibbonWindow
 {
-    /// <summary>
-    /// Interaction logic for HelloView.xaml
-    /// </summary>
-    public partial class HelloView : Window
+    public HelloViewModel ViewModel => (HelloViewModel)this.DataContext;
+    public HelloView()
     {
-        public HelloViewModel ViewModel => (HelloViewModel)this.DataContext;
-        public HelloView()
-        {
-            InitializeComponent();
-            this.DataContext = Ioc.Default.GetService<HelloViewModel>();
-        }
+        InitializeComponent();
+        this.DataContext = Ioc.Default.GetService<HelloViewModel>();
     }
 }

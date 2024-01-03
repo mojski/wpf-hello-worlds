@@ -1,4 +1,4 @@
-﻿<Window
+﻿<syncfusion:RibbonWindow
     x:Class="WinUI.Views.FunFact.UpdateFunFactView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,7 +7,8 @@
     xmlns:funFact="clr-namespace:WinUI.ViewModels.FunFact"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
-    Title="UpdateFunFactView"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    Title="{DynamicResource ResourceKey=UpdateWindowTitle}"
     Width="800"
     Height="450"
     d:DataContext="{d:DesignInstance funFact:UpdateFunFactViewModel,
@@ -28,6 +29,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Default.xaml" />
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+                <ResourceDictionary Source="/Resources/Strings.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -49,7 +52,7 @@
             Grid.Row="0"
             Grid.Column="0"
             VerticalAlignment="Center"
-            Content="Name :"
+            Content="{DynamicResource ResourceKey=UpdateNameLabel}"
             Style="{DynamicResource LabelDefaultStyle}" />
         <TextBox
             Grid.Row="0"
@@ -62,7 +65,7 @@
             Grid.Column="0"
             Margin="2"
             VerticalAlignment="Top"
-            Content="Content :"
+            Content="{DynamicResource ResourceKey=UpdateContentLabel}"
             Style="{DynamicResource LabelDefaultStyle}" />
         <TextBox
             Grid.Row="1"
@@ -75,7 +78,7 @@
             Grid.Row="2"
             Grid.Column="0"
             VerticalAlignment="Center"
-            Content="Image :"
+            Content="{DynamicResource ResourceKey=UpdateImageLabel}"
             Style="{DynamicResource LabelDefaultStyle}" />
         <Image
             Grid.Row="2"
@@ -91,7 +94,7 @@
             Grid.Row="3"
             Grid.Column="0"
             VerticalAlignment="Center"
-            Content="Related link :"
+            Content="{DynamicResource ResourceKey=RelatedLinkLabel}"
             Style="{DynamicResource LabelDefaultStyle}" />
         <TextBox
             Grid.Row="3"
@@ -118,14 +121,14 @@
 
             <Button
                 Command="{Binding Path=OkCommand, Mode=OneWay}"
-                Content="OK"
+                Content="{DynamicResource ResourceKey=UpdateOkButtonContent}"
                 Style="{DynamicResource ButtonDefaultStyle}" />
             <Button
                 Margin="5,0,0,0"
                 Command="{Binding Path=CancelCommand, Mode=OneWay}"
-                Content="Cancel"
+                Content="{DynamicResource ResourceKey=UpdateCancelButtonContent}"
                 Style="{DynamicResource ButtonDefaultStyle}" />
         </StackPanel>
 
     </Grid>
-</Window>
+</syncfusion:RibbonWindow>
