@@ -1,8 +1,11 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:s="clr-namespace:System;assembly=System.Runtime">
+    xmlns:s="clr-namespace:System;assembly=System.Runtime"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <s:String x:Key="MainWindowTitle">Welcome to Hello FunFact manager</s:String>
+    <sys:Double x:Key="WindowWidth">800</sys:Double>
+    <sys:Double x:Key="WindowHeight">600</sys:Double>
     <Style TargetType="{x:Type Button}">
         <Style.Resources>
             <Style TargetType="{x:Type Border}">
@@ -11,7 +14,6 @@
         </Style.Resources>
         <Setter Property="Width" Value="90" />
         <Setter Property="Height" Value="30" />
-        <!--<Setter Property="CornerRadius" Value="5" />-->
     </Style>
     <Style TargetType="{x:Type Label}">
         <Setter Property="Margin" Value="2" />
@@ -19,7 +21,5 @@
     </Style>
     <Style TargetType="{x:Type TextBox}">
         <Setter Property="Margin" Value="2" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="Background" Value="LightSteelBlue" />
     </Style>
 </ResourceDictionary>

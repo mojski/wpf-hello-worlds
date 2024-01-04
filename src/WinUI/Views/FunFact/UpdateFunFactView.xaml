@@ -9,8 +9,8 @@
     xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     Title="{DynamicResource ResourceKey=UpdateWindowTitle}"
-    Width="800"
-    Height="450"
+    Width="{DynamicResource ResourceKey=WindowWidth}"
+    Height="{DynamicResource ResourceKey=WindowHeight}"
     d:DataContext="{d:DesignInstance funFact:UpdateFunFactViewModel,
                                      IsDesignTimeCreatable=True}"
     md:DialogServiceViews.IsRegistered="True"
@@ -32,61 +32,45 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="2*" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
 
         </Grid.RowDefinitions>
-        <Label
-            Grid.Row="0"
-            Grid.Column="0"
-            VerticalAlignment="Center"
-            Content="{DynamicResource ResourceKey=UpdateNameLabel}" />
-        <TextBox
+        <syncfusion:SfTextInputLayout
             Grid.Row="0"
             Grid.Column="1"
-            VerticalContentAlignment="Center"
-            Text="{Binding Path=Item.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <Label
-            Grid.Row="1"
-            Grid.Column="0"
-            Margin="2"
-            VerticalAlignment="Top"
-            Content="{DynamicResource ResourceKey=UpdateContentLabel}" />
-        <TextBox
+            Hint="{DynamicResource ResourceKey=UpdateNameLabel}">
+            <TextBox VerticalContentAlignment="Center" Text="{Binding Path=Item.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </syncfusion:SfTextInputLayout>
+        <syncfusion:SfTextInputLayout
             Grid.Row="1"
             Grid.Column="1"
-            SpellCheck.IsEnabled="True"
-            Text="{Binding Path=Item.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            TextWrapping="WrapWithOverflow" />
-        <Label
-            Grid.Row="2"
-            Grid.Column="0"
-            VerticalAlignment="Center"
-            Content="{DynamicResource ResourceKey=UpdateImageLabel}" />
+            Hint="{DynamicResource ResourceKey=UpdateContentLabel}">
+            <TextBox
+                SpellCheck.IsEnabled="True"
+                Text="{Binding Path=Item.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                TextWrapping="WrapWithOverflow" />
+        </syncfusion:SfTextInputLayout>
         <Image
             Grid.Row="2"
             Grid.Column="1"
-            Width="100"
+            Width="150"
             Margin="2"
             Source="{Binding Path=Item.Image.Value}">
             <Image.InputBindings>
                 <MouseBinding Command="{Binding Path=ImageUploadCommand}" MouseAction="LeftDoubleClick" />
             </Image.InputBindings>
         </Image>
-        <Label
-            Grid.Row="3"
-            Grid.Column="0"
-            VerticalAlignment="Center"
-            Content="{DynamicResource ResourceKey=RelatedLinkLabel}" />
-        <TextBox
+
+        <syncfusion:SfTextInputLayout
             Grid.Row="3"
             Grid.Column="1"
-            VerticalContentAlignment="Center"
-            Text="{Binding Path=Item.Link, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
+            Hint="{DynamicResource ResourceKey=RelatedLinkLabel}">
+            <TextBox VerticalContentAlignment="Center" Text="{Binding Path=Item.Link, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </syncfusion:SfTextInputLayout>
         <syncfusion:SfDataGrid
             Grid.Row="4"
             Grid.Column="0"

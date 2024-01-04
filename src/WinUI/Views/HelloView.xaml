@@ -12,9 +12,9 @@
     xmlns:userControl="clr-namespace:WinUI.UserControl"
     xmlns:valueConverters="clr-namespace:WinUI.ValueConverters"
     xmlns:viewModels="clr-namespace:WinUI.ViewModels"
-    Title="{DynamicResource MainWindowTitle}"
-    Width="800"
-    Height="450"
+    Title="{DynamicResource ResourceKey=MainWindowTitle}"
+    Width="{DynamicResource ResourceKey=WindowWidth}"
+    Height="{DynamicResource ResourceKey=WindowHeight}"
     d:DataContext="{d:DesignInstance viewModels:HelloViewModel,
                                      IsDesignTimeCreatable=True}"
     md:DialogServiceViews.IsRegistered="True"
@@ -90,7 +90,6 @@
                 </syncfusion:RibbonBar>
             </syncfusion:RibbonTab>
         </syncfusion:Ribbon>
-        <!--  Visibility="{Binding Items, Converter={StaticResource ListToVisibilityConverter}}"  -->
         <syncfusion:SfDataGrid
             Grid.Row="2"
             Grid.Column="0"

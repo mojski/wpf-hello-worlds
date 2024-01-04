@@ -36,6 +36,7 @@
     <PackageReference Include="MvvmDialogs" Version="9.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Syncfusion.SfGrid.WPF" Version="24.1.44" />
+    <PackageReference Include="Syncfusion.SfTextInputLayout.WPF" Version="24.1.44" />
     <PackageReference Include="Syncfusion.Tools.WPF" Version="24.1.44" />
   </ItemGroup>
 
@@ -53,6 +54,12 @@
 
   <ItemGroup>
     <Folder Include="Resources\Assets\Icons\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="synfusion.license">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

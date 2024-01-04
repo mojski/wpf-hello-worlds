@@ -1,4 +1,5 @@
-﻿using WinUI.Models.Interfaces;
+﻿using System.IO;
+using WinUI.Models.Interfaces;
 using WinUI.Models.Services;
 
 namespace WinUI;
@@ -16,7 +17,12 @@ public partial class App : Application
 {
     public App()
     {
-        Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NAaF5cWWdCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWX5ec3RSQmlYV0B1X0o=");
+        var licensePath = "synfusion.license";
+        if (File.Exists(licensePath))
+        {
+            var license = File.ReadAllText(licensePath);
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(license);
+        }
     }
 
     protected override void OnStartup(StartupEventArgs e)
