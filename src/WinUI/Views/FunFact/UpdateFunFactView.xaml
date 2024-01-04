@@ -43,34 +43,29 @@
             Grid.Row="0"
             Grid.Column="0"
             VerticalAlignment="Center"
-            Content="{DynamicResource ResourceKey=UpdateNameLabel}"
-            Style="{DynamicResource LabelDefaultStyle}" />
+            Content="{DynamicResource ResourceKey=UpdateNameLabel}" />
         <TextBox
             Grid.Row="0"
             Grid.Column="1"
             VerticalContentAlignment="Center"
-            Style="{DynamicResource TextBoxDefaultStyle}"
             Text="{Binding Path=Item.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <Label
             Grid.Row="1"
             Grid.Column="0"
             Margin="2"
             VerticalAlignment="Top"
-            Content="{DynamicResource ResourceKey=UpdateContentLabel}"
-            Style="{DynamicResource LabelDefaultStyle}" />
+            Content="{DynamicResource ResourceKey=UpdateContentLabel}" />
         <TextBox
             Grid.Row="1"
             Grid.Column="1"
             SpellCheck.IsEnabled="True"
-            Style="{DynamicResource TextBoxDefaultStyle}"
             Text="{Binding Path=Item.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="WrapWithOverflow" />
         <Label
             Grid.Row="2"
             Grid.Column="0"
             VerticalAlignment="Center"
-            Content="{DynamicResource ResourceKey=UpdateImageLabel}"
-            Style="{DynamicResource LabelDefaultStyle}" />
+            Content="{DynamicResource ResourceKey=UpdateImageLabel}" />
         <Image
             Grid.Row="2"
             Grid.Column="1"
@@ -85,20 +80,21 @@
             Grid.Row="3"
             Grid.Column="0"
             VerticalAlignment="Center"
-            Content="{DynamicResource ResourceKey=RelatedLinkLabel}"
-            Style="{DynamicResource LabelDefaultStyle}" />
+            Content="{DynamicResource ResourceKey=RelatedLinkLabel}" />
         <TextBox
             Grid.Row="3"
             Grid.Column="1"
             VerticalContentAlignment="Center"
-            Style="{DynamicResource TextBoxDefaultStyle}"
             Text="{Binding Path=Item.Link, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-        <DataGrid
+        <syncfusion:SfDataGrid
             Grid.Row="4"
             Grid.Column="0"
             Grid.ColumnSpan="2"
+            AllowEditing="True"
             AutoGenerateColumns="True"
+            ColumnSizer="Star"
+            HeaderRowHeight="0"
             ItemsSource="{Binding Path=Item.RelatedMovies, Mode=OneWay}" />
 
         <StackPanel
@@ -110,16 +106,11 @@
             HorizontalAlignment="Right"
             Orientation="Horizontal">
 
-            <Button
-                Command="{Binding Path=OkCommand, Mode=OneWay}"
-                Content="{DynamicResource ResourceKey=UpdateOkButtonContent}"
-                Style="{DynamicResource ButtonDefaultStyle}" />
+            <Button Command="{Binding Path=OkCommand, Mode=OneWay}" Content="{DynamicResource ResourceKey=UpdateOkButtonContent}" />
             <Button
                 Margin="5,0,0,0"
                 Command="{Binding Path=CancelCommand, Mode=OneWay}"
-                Content="{DynamicResource ResourceKey=UpdateCancelButtonContent}"
-                Style="{DynamicResource ButtonDefaultStyle}" />
+                Content="{DynamicResource ResourceKey=UpdateCancelButtonContent}" />
         </StackPanel>
-
     </Grid>
 </syncfusion:RibbonWindow>
