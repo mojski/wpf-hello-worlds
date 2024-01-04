@@ -1,14 +1,15 @@
-﻿using System.Globalization;
+﻿namespace WinUI.ValueConverters;
+
+using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace WinUI.ValueConverters;
 
-internal sealed class NullVisibilityConverter : IValueConverter
+internal sealed class StringToVisibilityConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return value is null 
+        return string.IsNullOrWhiteSpace(value as string) 
             ? Visibility.Collapsed : Visibility.Visible;
     }
 
