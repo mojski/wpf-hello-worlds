@@ -32,6 +32,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <valueConverters:NullVisibilityConverter x:Key="NullVisibilityConverter" />
+            <valueConverters:ListToVisibilityConverter x:Key="ListToVisibilityConverter" />
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -89,28 +90,26 @@
                 </syncfusion:RibbonBar>
             </syncfusion:RibbonTab>
         </syncfusion:Ribbon>
-        <DataGrid
+        <!--  Visibility="{Binding Items, Converter={StaticResource ListToVisibilityConverter}}"  -->
+        <syncfusion:SfDataGrid
             Grid.Row="2"
             Grid.Column="0"
             AutoGenerateColumns="False"
             ItemsSource="{Binding Items, Mode=OneWay}"
             SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Title}" Header="Title" />
-                <DataGridTextColumn Binding="{Binding Content}" Header="Content">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="{x:Type TextBlock}">
-                            <Setter Property="TextWrapping" Value="Wrap" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-            </DataGrid.Columns>
+            <syncfusion:SfDataGrid.Columns>
+                <syncfusion:GridTextColumn AllowFiltering="True" MappingName="Title" />
+                <syncfusion:GridTextColumn
+                    ColumnSizer="Star"
+                    MappingName="Content"
+                    TextWrapping="NoWrap" />
+            </syncfusion:SfDataGrid.Columns>
             <b:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction Command="{Binding Path=UpdateFunFactCommand, Mode=OneWay}" CommandParameter="{Binding Path=SelectedItem}" />
                 </i:EventTrigger>
             </b:Interaction.Triggers>
-        </DataGrid>
+        </syncfusion:SfDataGrid>
         <StackPanel
             Grid.Row="2"
             Grid.Column="1"
