@@ -15,4 +15,7 @@
     <Style x:Key="TextBoxDefaultStyle" TargetType="TextBox">
         <Setter Property="Margin" Value="2" />
     </Style>
+    <Style TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="red" />
+    </Style>
 </ResourceDictionary>
