@@ -13,7 +13,7 @@
     mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
-            <valueConverters:NullVisibilityConverter x:Key="NullVisibilityConverter" />
+            <valueConverters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -39,11 +39,11 @@
             Margin="5,0,0,0"
             Text="{Binding Path=Content}"
             TextWrapping="WrapWithOverflow" />
-        <Separator Grid.Row="3" Visibility="{Binding Link, Converter={StaticResource NullVisibilityConverter}}" />
+        <Separator Grid.Row="3" Visibility="{Binding Link, Converter={StaticResource StringToVisibilityConverter}}" />
         <Label
             Grid.Row="4"
             Content="Related link:"
-            Visibility="{Binding Link, Converter={StaticResource NullVisibilityConverter}}" />
+            Visibility="{Binding Link, Converter={StaticResource StringToVisibilityConverter}}" />
         <TextBlock
             Grid.Row="5"
             Margin="5,0,0,0"

@@ -36,6 +36,7 @@
                 <ResourceDictionary Source="../Resources/Icons.xaml" />
                 <ResourceDictionary Source="../Resources/Strings.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <valueConverters:NullVisibilityConverter x:Key="NullVisibilityConverter" />
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -115,10 +116,10 @@
                 </i:EventTrigger>
             </b:Interaction.Triggers>
         </DataGrid>
-        <StackPanel Grid.Row="2" Grid.Column="1">
-            <StackPanel.Resources>
-                <valueConverters:NullVisibilityConverter x:Key="Converter" />
-            </StackPanel.Resources>
+        <StackPanel
+            Grid.Row="2"
+            Grid.Column="1"
+            Visibility="{Binding SelectedItem, Converter={StaticResource NullVisibilityConverter}}">
             <userControl:DetailsFunFactUserControl DataContext="{Binding Path=SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
         <StackPanel

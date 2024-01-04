@@ -8,7 +8,7 @@ public sealed class NullVisibilityConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return string.IsNullOrEmpty(value as string) 
+        return value is null 
             ? Visibility.Collapsed : Visibility.Visible;
     }
 
