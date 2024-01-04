@@ -84,7 +84,7 @@
                     <syncfusion:RibbonButton
                         Command="{Binding Path=SaveCurrentCommand}"
                         Label=""
-                        LargeIcon="{DynamicResource ResourceKey=SaveIcon}"
+                        LargeIcon="{DynamicResource ResourceKey=SaveFileIcon}"
                         SizeForm="Large" />
                 </syncfusion:RibbonBar>
             </syncfusion:RibbonTab>
