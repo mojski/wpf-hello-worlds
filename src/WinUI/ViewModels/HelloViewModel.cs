@@ -5,6 +5,7 @@ using MvvmDialogs.FrameworkDialogs.MessageBox;
 using MvvmDialogs.FrameworkDialogs.OpenFile;
 using MvvmDialogs.FrameworkDialogs.SaveFile;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
 using WinUI.Models;
 using WinUI.Models.Interfaces;
@@ -39,6 +40,9 @@ public partial class HelloViewModel : ObservableObject
         this.FileLoadCommand = new AsyncRelayCommand(this.FileLoadAsync);
         this.FileSaveCommand = new AsyncRelayCommand(this.FileSaveAsync);
         this.FileExitCommand = new AsyncRelayCommand(this.FileExitAsync);
+
+        this.OpenBrowserWithLinkCommand = new AsyncRelayCommand<string>(this.OpenBrowserAsync);
+        this.OpenAboutViewCommand = new AsyncRelayCommand(this.OpenAboutAsync);
     }
 
     private async Task FileLoadAsync(CancellationToken cancellationToken)
@@ -239,6 +243,32 @@ public partial class HelloViewModel : ObservableObject
         await Task.CompletedTask;
     }
 
+    private async Task OpenBrowserAsync(string parameter, CancellationToken cancellationToken)
+    {
+        var result = Uri.TryCreate(parameter, UriKind.Absolute, out Uri uriResult)
+                     && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+        if (result is false)
+        {
+            return;
+        }
+
+        Process.Start(new ProcessStartInfo
+        {
+            FileName = parameter!,
+            UseShellExecute = true
+        });
+
+        await Task.CompletedTask;
+    }
+
+    private async Task OpenAboutAsync(CancellationToken cancellationToken)
+    {
+        var viewModel = new AboutViewModel();
+
+        var result = this.dialogService.ShowDialog(this, viewModel);
+    }
+
     public IAsyncRelayCommand FileLoadCommand { get; }
     public IAsyncRelayCommand FileSaveCommand { get; }
     public IAsyncRelayCommand SaveCurrentCommand { get; }
@@ -246,4 +276,6 @@ public partial class HelloViewModel : ObservableObject
     public IAsyncRelayCommand<Models.FunFact> UpdateFunFactCommand { get; }
     public IAsyncRelayCommand<Models.FunFact> DeleteFunFactCommand { get; }
     public IAsyncRelayCommand CreateFunFactCommand { get; }
+    public IAsyncRelayCommand<string> OpenBrowserWithLinkCommand { get; }
+    public IAsyncRelayCommand OpenAboutViewCommand { get; }
 }

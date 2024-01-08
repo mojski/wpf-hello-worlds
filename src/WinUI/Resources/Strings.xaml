@@ -16,4 +16,9 @@
     <s:String x:Key="RelatedLinkLabel">Related link :</s:String>
     <s:String x:Key="UpdateOkButtonContent">Ok</s:String>
     <s:String x:Key="UpdateCancelButtonContent">Cancel</s:String>
+    <s:String x:Key="AboutGitHubPage">https://github.com/mojski/wpf-hello-worlds/tree/syncfusion</s:String>
+    <s:String x:Key="ProjectPage">https://www.cobytuobejrzec.pl/Credits</s:String>
+    <s:String x:Key="AboutButtonLabel">About</s:String>
+    <s:String x:Key="AboutGithubButtonLabel">Git</s:String>
+    <s:String x:Key="AboutProjectButtonLabel">Project</s:String>
 </ResourceDictionary>

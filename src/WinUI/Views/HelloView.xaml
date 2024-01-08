@@ -6,6 +6,7 @@
     xmlns:behaviors="clr-namespace:WinUI.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
@@ -89,6 +90,29 @@
                         SizeForm="Large" />
                 </syncfusion:RibbonBar>
             </syncfusion:RibbonTab>
+            <!--  add github icon from package  -->
+            <syncfusion:RibbonTab Caption="Help" IsChecked="False">
+                <syncfusion:RibbonBar Width="Auto" Header="{DynamicResource ResourceKey=EditRibbonName}">
+                    <syncfusion:RibbonButton
+                        Command="{Binding Path=OpenAboutViewCommand}"
+                        Label="{DynamicResource ResourceKey=AboutButtonLabel}"
+                        LargeIcon="{DynamicResource ResourceKey=AboutIcon}"
+                        SizeForm="Large" />
+                    <syncfusion:RibbonButton
+                        Command="{Binding Path=OpenBrowserWithLinkCommand}"
+                        CommandParameter="{DynamicResource ResourceKey=AboutGitHubPage}"
+                        Label="{DynamicResource ResourceKey=AboutGithubButtonLabel}"
+                        LargeIcon="{DynamicResource ResourceKey=GithubIcon}"
+                        SizeForm="Large" />
+                    <syncfusion:RibbonButton
+                        Command="{Binding Path=OpenBrowserWithLinkCommand}"
+                        CommandParameter="{DynamicResource ResourceKey=ProjectPage}"
+                        Label="{DynamicResource ResourceKey=AboutProjectButtonLabel}"
+                        LargeIcon="{DynamicResource ResourceKey=HelloIcon}"
+                        SizeForm="Large" />
+                </syncfusion:RibbonBar>
+            </syncfusion:RibbonTab>
+
         </syncfusion:Ribbon>
         <syncfusion:SfDataGrid
             Grid.Row="2"
