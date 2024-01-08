@@ -80,6 +80,7 @@
                         SizeForm="Large" />
                     <syncfusion:RibbonButton
                         Command="{Binding Path=DeleteFunFactCommand}"
+                        CommandParameter="{Binding Path=SelectedItem}"
                         Label=""
                         LargeIcon="{DynamicResource ResourceKey=DeleteFunFactIcon}"
                         SizeForm="Large" />
