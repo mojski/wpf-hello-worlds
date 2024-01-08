@@ -19,6 +19,10 @@
     <s:String x:Key="AboutGitHubPage">https://github.com/mojski/wpf-hello-worlds/tree/syncfusion</s:String>
     <s:String x:Key="ProjectPage">https://www.cobytuobejrzec.pl/Credits</s:String>
     <s:String x:Key="AboutButtonLabel">About</s:String>
+    <s:String x:Key="AboutRibbonName">About</s:String>
     <s:String x:Key="AboutGithubButtonLabel">Git</s:String>
     <s:String x:Key="AboutProjectButtonLabel">Project</s:String>
+    <s:String x:Key="AboutWindowTitle">Fun Fact App About</s:String>
+    <s:String x:Key="AboutWindowMainLabel">Hello Fun Fact Adder App</s:String>
+    <s:String x:Key="AboutWindowDescription">This is a simple window application whose task is to edit a json file containing interesting facts about movies. The json file is the data source for the movie website.</s:String>
 </ResourceDictionary>
